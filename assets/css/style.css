@@ -1,0 +1,18 @@
+body {
+    height: 90%;
+    width: 90%;
+    margin: 0;
+    overflow-x: hidden;
+}
+#main {
+    /* height: 95%;
+    width: 49.4%; */
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3%;
+    display: block;
+    image-rendering: crisp-edges;
+    border: 25px black solid;
+}

@@ -1,0 +1,422 @@
+const can = document.getElementById('main');
+const ctx = can.getContext('2d');
+can.offscreenCanvas = document.createElement('canvas');
+can.offscreenCanvas.width = can.width;
+can.offscreenCanvas.height = can.height;
+
+const directions = [8, -8, -1, 1, 7, -7, 9, -9];
+const kingDir = [8, 9, 1, -7, -8, -9, -1, 7];
+const knightDir = [15, 17, 10, -6, -15, -17, -10, 6];
+const numToEdge = preComputedSlidingData();
+const preKnight = preComputedKnightData();
+const preKing = preComputedKingData();
+let mouse = {x:0,y:0};
+let piece = new Piece();
+let board = new Board();
+
+let preferedPromotion = piece.queen;
+
+
+
+//returnlegal
+function checkLegal (board1) {
+    console.time('checkLegal');
+    board1.moves = [];
+    for (let start = 0; start < 64; start++) {
+        let t = board1.square[start];
+        if (pieceIsColour(t, board1.whiteToMove)) {
+            if (isSliding(t)) {
+                genSliding(board1, start, t);
+            }
+            if (t == (piece.white | piece.pawn) || t == (piece.black | piece.pawn)) {
+                genPawn(board1, start, t);
+            }
+            if (t == (piece.white | piece.knight) || t == (piece.black | piece.knight)) {
+                genKnight(board1, start);
+            }
+            if (t == (piece.white | piece.king) || t == (piece.black | piece.king)) {
+                genKing(board1, start);
+            }
+        }
+    }
+    if (board1.whiteToMove) {
+        if (board1.castleQ && board1.square[1] == 0 && board1.square[2] == 0 && board1.square[3] == 0) {
+            board1.moves.push(new MoveSpecial(4, 2, -1, false));
+        }
+        if (board1.castleK && board1.square[5] == 0 && board1.square[6] == 0) {
+            board1.moves.push(new MoveSpecial(4, 6, 1, false));
+        }
+    } else {
+        if (board1.castleq && board1.square[57] == 0 && board1.square[58] == 0 && board1.square[59] == 0) {
+            board1.moves.push(new MoveSpecial(60, 58, -1, false));
+        }
+        if (board1.castlek && board1.square[61] == 0 && board1.square[62] == 0) {
+            board1.moves.push(new MoveSpecial(60, 62, 1, false));
+        }
+    }
+    filterLegal(board1);
+    console.timeEnd('checkLegal');
+}
+function filterLegal (board1) {
+    let col = piece.black;
+    if (board1.whiteToMove) {
+        col = piece.white;
+    }
+    for (let i = 0; i < 64; i++) {
+        if (!(board1.square[i] ^ (col | piece.king))) {
+            kingGenSlidingPin(board1, i);
+            if (checkIfAttacked(board1, i)) {
+                filterCheckLegal(board1, i);
+            }
+            break;
+        }
+    }
+}
+function kingGenSlidingPin (board1, i) {
+    let col = piece.white;
+    if (board1.whiteToMove) {
+        col = piece.black;
+    }
+    for (let dirI = 0; dirI < 8; dirI++) {
+        let hasFriend = false;
+        let friendIndex = 0;
+        let p = piece.rook;
+        if (dirI > 3) {
+            p = piece.bishop;
+        }
+        for (let n = 0; n < numToEdge[i][dirI]; n++) {
+            let target = i + directions[dirI] * (n + 1);
+            let targetpiece = board1.square[target];
+            if (hasFriend && (!(targetpiece ^ (col | p)) || !(targetpiece ^ (col | piece.queen)))) {
+                for (let k = board1.moves.length - 1; k > -1; k--) {
+                    if (!(board1.moves[k].start ^ friendIndex)) {
+                        if (!Number.isInteger((friendIndex - board1.moves[k].target)/directions[dirI])) {
+                            board1.moves.splice(k,1);
+                        }
+                        else if (!((board1.moves[k].target/8|0) ^ (friendIndex/8|0))) {
+
+                        } else {
+                            board1.moves.splice(k,1);
+                        }
+                    }
+                }
+                break;
+            }
+            if (pieceIsColour(targetpiece, !board1.whiteToMove) || (hasFriend && pieceIsColour(targetpiece, board1.whiteToMove))) {
+                break;
+            }
+            if (!hasFriend && pieceIsColour(targetpiece, board1.whiteToMove)) {
+                friendIndex = target;
+                hasFriend = true;
+            }
+        }
+    }
+}
+function genSliding (board1, i, type) {
+    let start = 0;
+    let end = 8;
+    if (type == (piece.white | piece.rook) || type == (piece.black | piece.rook)) {
+        end = 4;
+    } else if (type == (piece.white | piece.bishop) || type == (piece.black | piece.bishop)) {
+        start = 4;
+    }
+    for (let dirI = start; dirI < end; dirI++) {
+        for (let n = 0; n < numToEdge[i][dirI]; n++) {
+            let target = i + directions[dirI] * (n + 1);
+            let targetpiece = board1.square[target];
+
+            if (pieceIsColour(targetpiece, board1.whiteToMove)) {
+                break;
+            }
+
+            board1.moves.push(new Move(i, target));
+
+            if (pieceIsColour(targetpiece, !board1.whiteToMove)) {
+                break;
+            }
+        }
+    }
+}
+function genPawn (board1, i, type) {
+    let offset = 8;
+    let allowDouble = false;
+    let toSide = 0;
+    if (pieceIsColour(type, false)) {
+        offset *= -1;
+        if (i > 47) {
+            allowDouble = true;
+        }
+    } else {
+        if (i < 16) {
+            allowDouble = true;
+        }
+    }
+    if (!preKing[i][6]) {
+        toSide -= 1;
+    } else if (!preKing[i][2]) {
+        toSide += 1;
+    }
+    if (board1.square[i + offset] == piece.none) {
+        board1.moves.push(new Move(i, i + offset));
+    }
+    if (allowDouble && board1.square[i + offset * 2] == piece.none && board1.square[i + offset] == piece.none) {
+        board1.moves.push(new PawnLeap(i, i + offset * 2));
+    }
+    if (pieceIsColour(board1.square[i + offset + 1], !board1.whiteToMove) && toSide < 1) {
+        board1.moves.push(new Move(i, i + offset + 1));
+    }
+    if (pieceIsColour(board1.square[i + offset - 1], !board1.whiteToMove) && toSide > -1) {
+        board1.moves.push(new Move(i, i + offset - 1));
+    }
+    //enpassantCheck
+    if (board1.enPas == i + offset + 1) {
+        board1.moves.push(new MoveSpecial(i, i + offset + 1, 0, true));
+    } else if (board1.enPas == i + offset - 1) {
+        board1.moves.push(new MoveSpecial(i, i + offset - 1, 0, true));
+    }
+}
+function genKnight (board1, i) {
+    for (let j = 0; j < 8; j++) {
+        if (preKnight[i][j] && !pieceIsColour(board1.square[i + knightDir[j]], board1.whiteToMove)) {
+            board1.moves.push(new Move(i, i + knightDir[j]));
+        }
+    }
+}
+function genKing (board1, i) {
+    for (let j = 0; j < 8; j++) {
+        if (preKing[i][j] && !pieceIsColour(board1.square[i + kingDir[j]], board1.whiteToMove) && !checkIfAttacked(board1, i + kingDir[j])) {
+            board1.moves.push(new Move(i, i + kingDir[j]));
+        }
+    }
+}
+function checkIfAttacked (board1, i) {
+    let col = piece.white;
+    let colme = piece.black;
+    if (board1.whiteToMove) {
+        col = piece.black;
+        colme = piece.white;
+    }
+    for (let dirI = 0; dirI < 8; dirI++) {
+        let p = piece.rook;
+        if (dirI > 3) {
+            p = piece.bishop;
+        }
+        for (let n = 0; n < numToEdge[i][dirI]; n++) {
+            let targetpiece = board1.square[i + directions[dirI] * (n + 1)];
+            if (targetpiece > 0) {
+                if (!(targetpiece ^ (col | p)) || !(targetpiece ^ (col | piece.queen))) {
+                    return true;
+                }
+                if (!(targetpiece ^ (colme | piece.king))) {
+                    continue;
+                }
+                break;
+            }
+        }
+        if ((preKnight[i][dirI] && !(board1.square[i+knightDir[dirI]] ^ (col | piece.knight)))) {
+            return true;
+        }
+        if ((preKing[i][dirI] && !(board1.square[i+kingDir[dirI]] ^ (col | piece.king)))) {
+            return true;
+        }
+    }
+    if (board1.whiteToMove) {
+        if ((preKing[i][1] && !(board1.square[i+kingDir[1]] ^ (col | piece.pawn)))) {
+            return true;
+        }
+        if ((preKing[i][7] && !(board1.square[i+kingDir[7]] ^ (col | piece.pawn)))) {
+            return true;
+        }
+    } else {
+        if ((preKing[i][3] && !(board1.square[i+kingDir[3]] ^ (col | piece.pawn)))) {
+            return true;
+        }
+        if ((preKing[i][5] && !(board1.square[i+kingDir[5]] ^ (col | piece.pawn)))) {
+            return true;
+        }
+    }
+    return false;
+}
+function filterCheckLegal (board1, i) {
+    if (countAttacks(board1, i) > 1) {
+        for (let j = board1.moves.length - 1; j > -1; j--) {
+            if (board1.moves[j].start ^ i) {
+                board1.moves.splice(j,1);
+            }
+        }
+    }
+    let col = piece.white;
+    if (board1.whiteToMove) {
+        col = piece.black;
+    }
+    let blockcheck = [];
+    for (let dirI = 0; dirI < 8; dirI++) {
+        if ((preKnight[i][dirI] && !(board1.square[i+knightDir[dirI]] ^ (col | piece.knight)))) {
+            for (let j = board1.moves.length - 1; j > -1; j--) {
+                if (board1.moves[j].start ^ i && board1.moves[j].target ^ (i+knightDir[dirI])) {
+                    board1.moves.splice(j,1);
+                }
+            }
+        }
+        let p = piece.rook;
+        if (dirI > 3) {
+            p = piece.bishop;
+        }
+        for (let n = 0; n < numToEdge[i][dirI]; n++) {
+            let targetpiece = board1.square[i + directions[dirI] * (n + 1)];
+            if (targetpiece > 0) {
+                if (!(targetpiece ^ (col | p)) || !(targetpiece ^ (col | piece.queen))) {
+                    blockcheck[i + directions[dirI] * (n + 1)] = true;
+                    for (let o = 0; o < n; o++) {
+                        blockcheck[i + directions[dirI] * (o + 1)] = true;
+                    }
+                }
+                break;
+            }
+        }
+    }
+    if (board1.whiteToMove) {
+        if ((preKing[i][1] && !(board1.square[i+kingDir[1]] ^ (col | piece.pawn)))) {
+            blockcheck[i+kingDir[1]] = true;
+        }
+        if ((preKing[i][7] && !(board1.square[i+kingDir[7]] ^ (col | piece.pawn)))) {
+            blockcheck[i+kingDir[7]] = true;
+        }
+    } else {
+        if ((preKing[i][3] && !(board1.square[i+kingDir[3]] ^ (col | piece.pawn)))) {
+            blockcheck[i+kingDir[3]] = true;
+        }
+        if ((preKing[i][5] && !(board1.square[i+kingDir[5]] ^ (col | piece.pawn)))) {
+            blockcheck[i+kingDir[5]] = true;
+        }
+    }
+    for (let j = board1.moves.length - 1; j > -1; j--) {
+        if (!blockcheck[board1.moves[j].target] && board1.moves[j].start ^ i) {
+            board1.moves.splice(j,1);
+        }
+    }
+}
+function countAttacks(board1, i) {
+    let col = piece.white;
+    if (board1.whiteToMove) {
+        col = piece.black;
+    }
+    let count = 0;
+    for (let dirI = 0; dirI < 8; dirI++) {
+        let p = piece.rook;
+        if (dirI > 3) {
+            p = piece.bishop;
+        }
+        for (let n = 0; n < numToEdge[i][dirI]; n++) {
+            let targetpiece = board1.square[i + directions[dirI] * (n + 1)];
+            if (targetpiece > 0) {
+                if (!(targetpiece ^ (col | p)) || !(targetpiece ^ (col | piece.queen))) {
+                    count++;
+                }
+                break;
+            }
+        }
+        if ((preKnight[i][dirI] && !(board1.square[i+knightDir[dirI]] ^ (col | piece.knight)))) {
+            count++;
+        }
+        if ((preKing[i][dirI] && !(board1.square[i+kingDir[dirI]] ^ (col | piece.king)))) {
+            count++;
+        }
+    }
+    if (board1.whiteToMove) {
+        if ((preKing[i][1] && !(board1.square[i+kingDir[1]] ^ (col | piece.pawn)))) {
+            count++;
+        }
+        if ((preKing[i][7] && !(board1.square[i+kingDir[7]] ^ (col | piece.pawn)))) {
+            count++;
+        }
+    } else {
+        if ((preKing[i][3] && !(board1.square[i+kingDir[3]] ^ (col | piece.pawn)))) {
+            count++;
+        }
+        if ((preKing[i][5] && !(board1.square[i+kingDir[5]] ^ (col | piece.pawn)))) {
+            count++;
+        }
+    }
+    return count;
+}
+function checkValid (s, t, board1) {
+    for (let i = 0; i < board1.moves.length; i++) {
+        if (board1.moves[i].start == s && board.moves[i].target == t) {
+            return board1.moves[i];
+        }
+    }
+    return false;
+}
+function pieceIsColour (i, white) {
+    if (white) {
+        if (i < 16) {
+            return false;
+        }
+        return true;
+    }
+    if (i > 16 || i < 1) {
+        return false;
+    }
+    return true;
+}
+function isSliding (i) {
+    return (i == (piece.white | piece.bishop) || i == (piece.white | piece.rook) || i == (piece.white | piece.queen) || i == (piece.black | piece.bishop) || i == (piece.black | piece.rook) || i == (piece.black | piece.queen));
+}
+function preComputedSlidingData () {
+    let data = [];
+    for (let file = 0; file < 8; file++) {
+        for (let rank = 0; rank < 8; rank++) {
+
+            let numNorth = 7 - rank;
+            let numSouth = rank;
+            let numWest = file;
+            let numEast = 7 - file;
+
+            let index = rank * 8 + file;
+            data[index] = [
+                numNorth,
+                numSouth,
+                numWest,
+                numEast,
+                Math.min(numNorth, numWest),
+                Math.min(numSouth, numEast),
+                Math.min(numNorth, numEast),
+                Math.min(numSouth, numWest),
+            ];
+        }
+    }
+    return data;
+}
+function preComputedKnightData () {
+    let valid = [];
+    for (let i = 0; i < 64; i++) {
+        valid[i] = [
+            !(numToEdge[i][0] < 2 || numToEdge[i][2] < 1),
+            !(numToEdge[i][0] < 2 || numToEdge[i][3] < 1),
+            !(numToEdge[i][3] < 2 || numToEdge[i][0] < 1),
+            !(numToEdge[i][3] < 2 || numToEdge[i][1] < 1),
+            !(numToEdge[i][1] < 2 || numToEdge[i][3] < 1),
+            !(numToEdge[i][1] < 2 || numToEdge[i][2] < 1),
+            !(numToEdge[i][2] < 2 || numToEdge[i][1] < 1),
+            !(numToEdge[i][2] < 2 || numToEdge[i][0] < 1)
+        ];
+    }
+    return valid;
+}
+function preComputedKingData () {
+    let valid = [];
+    for (let i = 0; i < 64; i++) {
+        valid[i] = [
+            !(numToEdge[i][0] < 1),
+            !(numToEdge[i][0] < 1 || numToEdge[i][3] < 1),
+            !(numToEdge[i][3] < 1),
+            !(numToEdge[i][3] < 1 || numToEdge[i][1] < 1),
+            !(numToEdge[i][1] < 1),
+            !(numToEdge[i][1] < 1 || numToEdge[i][2] < 1),
+            !(numToEdge[i][2] < 1),
+            !(numToEdge[i][2] < 1 || numToEdge[i][0] < 1)
+        ];
+    }
+    return valid;
+}
