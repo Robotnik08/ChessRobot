@@ -56,20 +56,38 @@ update ();
 function update () {
     ctx.clearRect(0,0,can.width,can.height);
     ctx.drawImage(can.offscreenCanvas, 0, 0);
-    for (let i = 0; i < 64; i++) {
-        if (sprites[board.square[i]] != null && i != board.selectedTile) {
-            ctx.drawImage(sprites[board.square[i]],((i/8-((i/8)|0))*8)*(can.width/8|0),(7-((i/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
+    if (board.whiteToMove || (!board.whiteToMove && !board.isHuman.black)) {
+        for (let i = 0; i < 64; i++) {
+            if (sprites[board.square[i]] != null && i != board.selectedTile) {
+                ctx.drawImage(sprites[board.square[i]],((i/8-((i/8)|0))*8)*(can.width/8|0),(7-((i/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
+            }
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.6)';
+            let validmovesmap = getMap (board.selectedTile, board);
+            if (validmovesmap[i] &&((board.whiteToMove && board.isHuman.white) || (!board.whiteToMove && board.isHuman.black))) {
+                ctx.fillRect(((i/8-((i/8)|0))*8)*(can.width/8|0),(7-((i/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
+            }
         }
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.6)';
-        let validmovesmap = getMap (board.selectedTile, board);
-        if (validmovesmap[i]) {
-            ctx.fillRect(((i/8-((i/8)|0))*8)*(can.width/8|0),(7-((i/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
+        if (sprites[board.square[board.selectedTile]] != null) {
+            ctx.fillStyle = 'rgba(255, 222, 0, 0.6)';
+            ctx.fillRect(((board.selectedTile/8-((board.selectedTile/8)|0))*8)*(can.width/8|0),(7-((board.selectedTile/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
+            ctx.drawImage(sprites[board.square[board.selectedTile]],(mouse.x-(can.width/8)/2)|0,(mouse.y-(can.height/8)/2)|0,(can.width/8)|0,(can.height/8)|0);
         }
-    }
-    if (sprites[board.square[board.selectedTile]] != null) {
-        ctx.fillStyle = 'rgba(255, 222, 0, 0.6)';
-        ctx.fillRect(((board.selectedTile/8-((board.selectedTile/8)|0))*8)*(can.width/8|0),(7-((board.selectedTile/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
-        ctx.drawImage(sprites[board.square[board.selectedTile]],(mouse.x-(can.width/8)/2)|0,(mouse.y-(can.height/8)/2)|0,(can.width/8)|0,(can.height/8)|0);
+    } else {
+        for (let i = 0; i < 64; i++) {
+            if (sprites[board.square[i]] != null && i != board.selectedTile) {
+                ctx.drawImage(sprites[board.square[i]],can.width - ((i/8-((i/8)|0))*8 + 1)*(can.width/8|0),can.height - (7-((i/8)|0) + 1)*(can.height/8|0),can.width/8|0,can.height/8|0);
+            }
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.6)';
+            let validmovesmap = getMap (board.selectedTile, board);
+            if (validmovesmap[i] &&((board.whiteToMove && board.isHuman.white) || (!board.whiteToMove && board.isHuman.black))) {
+                ctx.fillRect(can.width - ((i/8-((i/8)|0))*8 + 1)*(can.width/8|0),can.height - (7-((i/8)|0) + 1)*(can.height/8|0),can.width/8|0,can.height/8|0);
+            }
+        }
+        if (sprites[board.square[board.selectedTile]] != null) {
+            ctx.fillStyle = 'rgba(255, 222, 0, 0.6)';
+            ctx.fillRect(can.width - ((board.selectedTile/8-((board.selectedTile/8)|0))*8 + 1)*(can.width/8|0),can.height - (7-((board.selectedTile/8)|0) + 1)*(can.height/8|0),can.width/8|0,can.height/8|0);
+            ctx.drawImage(sprites[board.square[board.selectedTile]],(mouse.x-(can.width/8)/2)|0,(mouse.y-(can.height/8)/2)|0,(can.width/8)|0,(can.height/8)|0);
+        }
     }
     requestAnimationFrame(update);
 }
@@ -87,3 +105,5 @@ function getMap (i, board1) {
     }
     return resp;
 }
+
+

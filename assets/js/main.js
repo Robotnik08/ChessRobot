@@ -12,15 +12,14 @@ const preKnight = preComputedKnightData();
 const preKing = preComputedKingData();
 let mouse = {x:0,y:0};
 let piece = new Piece();
-let board = new Board();
+let board = new Board('1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - 0 0', true, true);
+const valuesWhite = [0, null, null, null, null, null, null, null, null, 0, -1000, -525, -350, -350, -100, null, null, 0, 1000, 525, 350, 350, 100];
 
-let preferedPromotion = piece.queen;
 
 
 
 //returnlegal
 function checkLegal (board1) {
-    console.time('checkLegal');
     board1.moves = [];
     for (let start = 0; start < 64; start++) {
         let t = board1.square[start];
@@ -40,22 +39,21 @@ function checkLegal (board1) {
         }
     }
     if (board1.whiteToMove) {
-        if (board1.castleQ && board1.square[1] == 0 && board1.square[2] == 0 && board1.square[3] == 0) {
+        if (board1.castleQ && board1.square[1] == 0 && board1.square[2] == 0 && board1.square[3] == 0 && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 3) && !checkIfAttacked(board1, 2)) {
             board1.moves.push(new MoveSpecial(4, 2, -1, false));
         }
-        if (board1.castleK && board1.square[5] == 0 && board1.square[6] == 0) {
+        if (board1.castleK && board1.square[5] == 0 && board1.square[6] == 0 && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 5) && !checkIfAttacked(board1, 6)) {
             board1.moves.push(new MoveSpecial(4, 6, 1, false));
         }
     } else {
-        if (board1.castleq && board1.square[57] == 0 && board1.square[58] == 0 && board1.square[59] == 0) {
+        if (board1.castleq && board1.square[57] == 0 && board1.square[58] == 0 && board1.square[59] == 0 && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 59) && !checkIfAttacked(board1, 58)) {
             board1.moves.push(new MoveSpecial(60, 58, -1, false));
         }
-        if (board1.castlek && board1.square[61] == 0 && board1.square[62] == 0) {
+        if (board1.castlek && board1.square[61] == 0 && board1.square[62] == 0 && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 61) && !checkIfAttacked(board1, 62)) {
             board1.moves.push(new MoveSpecial(60, 62, 1, false));
         }
     }
     filterLegal(board1);
-    console.timeEnd('checkLegal');
 }
 function filterLegal (board1) {
     let col = piece.black;
@@ -93,9 +91,7 @@ function kingGenSlidingPin (board1, i) {
                         if (!Number.isInteger((friendIndex - board1.moves[k].target)/directions[dirI])) {
                             board1.moves.splice(k,1);
                         }
-                        else if (!((board1.moves[k].target/8|0) ^ (friendIndex/8|0))) {
-
-                        } else {
+                        else if ((board1.moves[k].target/8|0) ^ (friendIndex/8|0) && !((i/8|0) ^ (friendIndex/8|0))) {
                             board1.moves.splice(k,1);
                         }
                     }
@@ -157,16 +153,37 @@ function genPawn (board1, i, type) {
         toSide += 1;
     }
     if (board1.square[i + offset] == piece.none) {
-        board1.moves.push(new Move(i, i + offset));
+        if (i + offset * 2 > 63 || i + offset * 2 < 0) {
+            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.bishop));
+            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.knight));
+            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.rook));
+            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.queen));
+        } else {
+            board1.moves.push(new Move(i, i + offset));
+        }
     }
     if (allowDouble && board1.square[i + offset * 2] == piece.none && board1.square[i + offset] == piece.none) {
         board1.moves.push(new PawnLeap(i, i + offset * 2));
     }
     if (pieceIsColour(board1.square[i + offset + 1], !board1.whiteToMove) && toSide < 1) {
-        board1.moves.push(new Move(i, i + offset + 1));
+        if (i + 1 + offset * 2 > 63 || i + 1 + offset * 2 < 0) {
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.bishop));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.knight));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.rook));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.queen));
+        } else {
+            board1.moves.push(new Move(i, i + 1 + offset));
+        }
     }
     if (pieceIsColour(board1.square[i + offset - 1], !board1.whiteToMove) && toSide > -1) {
-        board1.moves.push(new Move(i, i + offset - 1));
+        if (i - 1 + offset * 2 > 63 || i - 1 + offset * 2 < 0) {
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.bishop));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.knight));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.rook));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.queen));
+        } else {
+            board1.moves.push(new Move(i, i - 1 + offset));
+        }
     }
     //enpassantCheck
     if (board1.enPas == i + offset + 1) {
@@ -257,6 +274,7 @@ function filterCheckLegal (board1, i) {
                     board1.moves.splice(j,1);
                 }
             }
+            return;
         }
         let p = piece.rook;
         if (dirI > 3) {
@@ -273,7 +291,7 @@ function filterCheckLegal (board1, i) {
                 }
                 break;
             }
-        }
+        }          
     }
     if (board1.whiteToMove) {
         if ((preKing[i][1] && !(board1.square[i+kingDir[1]] ^ (col | piece.pawn)))) {
@@ -419,4 +437,41 @@ function preComputedKingData () {
         ];
     }
     return valid;
+}
+function getKingDex (board1) {
+    for (let i = 0; i < 64; i++) {
+        if (!(board1.square[i] ^ ((board1.whiteToMove ? piece.white : piece.black) | piece.king))) {
+            return i;
+        }
+    }
+    console.log('not founds?')
+    return 0;
+}
+function checkGameState (board1) {
+    return !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
+}
+function Evaluate (board1, depth) {
+    console.time('eval');
+    console.log(AlphaBeta(board1, depth));
+    console.timeEnd('eval');
+}
+function AlphaBeta (board1, depth) {
+    let sum = 0;
+    checkLegal(board1);
+    for (let i = board1.moves.length - 1; i >= 0; i--) {
+        sum++;
+        if (depth - 1) {
+            const n = structuredClone(board1);
+            setMove(n, board1.moves[i]);
+            sum += AlphaBeta(n, depth - 1);
+        }
+    }
+    return sum;
+}
+function evalMaterials (s) {
+    let eval = 0;
+    for (let i = 0; i < 64; i++) {
+        eval += valuesWhite[s[i]];
+    }
+    return eval;
 }

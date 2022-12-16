@@ -16,3 +16,6 @@ body {
     image-rendering: crisp-edges;
     border: 25px black solid;
 }
+#gameState {
+    text-align: center;
+}

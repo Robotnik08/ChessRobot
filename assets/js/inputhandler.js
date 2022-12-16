@@ -6,22 +6,28 @@ function getMouse (ev) {
 
 function clickdown () {
     if (mouse.x <= 0 || mouse.y <= 0) {return;}
-    board.selectedTile = ((mouse.x/(can.width/8))|0) + 8*(8 - (mouse.y/(can.height/8))|0);
+    if (board.whiteToMove || (!board.whiteToMove && !board.isHuman.black)) {
+        board.selectedTile = ((mouse.x/(can.width/8))|0) + 8*(8 - (mouse.y/(can.height/8))|0);
+    } else {
+        board.selectedTile = (((can.width - mouse.x)/(can.width/8))|0) + 8*(8 - ((can.height - mouse.y)/(can.height/8))|0);
+    }
 }
 
 function clickup () {
     if (mouse.x <= 0 || mouse.y <= 0) {return;}
-
-    if (((mouse.x/(can.width/8))|0) + 8*(8 - (mouse.y/(can.height/8))|0) == board.selectedTile) {board.selectedTile = null; return;}
+    let mouseposextract = {
+        x: board.whiteToMove || (!board.whiteToMove && !board.isHuman.black) ? mouse.x : can.width - mouse.x,
+        y: board.whiteToMove || (!board.whiteToMove && !board.isHuman.black) ? mouse.y : can.height - mouse.y
+    }
+    if (((mouseposextract.x/(can.width/8))|0) + 8*(8 - (mouseposextract.y/(can.height/8))|0) == board.selectedTile) {board.selectedTile = null; return;}
     
     if (board.square[board.selectedTile] == piece.none) {return;}
 
-    let move = checkValid(board.selectedTile, ((mouse.x/(can.width/8))|0) + 8*(8 - (mouse.y/(can.height/8))|0), board);
-    if (move.promote) {
-        
-    }
-    if (moveWithSound(move, board)) {
-
+    if ((board.whiteToMove && board.isHuman.white) || (!board.whiteToMove && board.isHuman.black)) {
+        let move = checkValid(board.selectedTile, ((mouseposextract.x/(can.width/8))|0) + 8*(8 - (mouseposextract.y/(can.height/8))|0), board);
+        moveWithSound(move, board);
+    } else {
+        board.selectedTile = null;
     }
 }
 function moveWithSound (move, board) {
@@ -29,13 +35,25 @@ function moveWithSound (move, board) {
         board.selectedTile = null;
         return false;
     }
-    let capture = board.setMove(move);
+    const capture = setMove(board, move);
     if (capture) {
         capturesound.currentTime = 0;
         capturesound.play();
     } else {
         movesound.currentTime = 0;
         movesound.play();
+    }
+    const state = checkGameState(board);
+    if (state != "Play") {
+        if (state == "CheckMate") {
+            document.getElementById("gameState").innerHTML = `CheckMate! ${(board.whiteToMove ? "Black" : "White")} wins!!`;
+        }
+        else if (state == "Stalemate") {
+            document.getElementById("gameState").innerHTML =  'Draw by stalemate!';
+        }
+        else if (state == "Fifty") {
+            document.getElementById("gameState").innerHTML = 'Draw by fifty move rule!';
+        }
     }
     return true;
 }
