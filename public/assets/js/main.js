@@ -8,8 +8,9 @@ const preKnight = preComputedKnightData();
 const preKing = preComputedKingData();
 const piece = new Piece();
 const board = new Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', true, false);
+const mouse = {x:0,y:0};
 // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-let mouse = {x:0,y:0};
+
 
 
 
@@ -472,11 +473,12 @@ function AlphaBeta (board1, depth, alpha, beta, m, r) {
         score = -Infinity;
         for (let i = board1.moves.length - 1; i >= 0; i--) {
             const n = structuredClone(board1);
-            setMove(n, board1.moves[order.indexOf(Math.max(...order))]);
-            order[order.indexOf(Math.max(...order))] = -Infinity;
+            setMove(n, board1.moves[order.indexOf(Math.min(...order))]);
+            if (r) var j = order.indexOf(Math.min(...order));
+            order[order.indexOf(Math.min(...order))] = Infinity;
             // setMove(n, board1.moves[i]);
             score = Math.max(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
-            if (r) if (Math.max(alpha, score) > alpha) winDex = i;
+            if (r) if (Math.max(alpha, score) > alpha) winDex = j;
             alpha = Math.max(alpha, score);
             if (score >= beta) {
                 break;
@@ -488,10 +490,11 @@ function AlphaBeta (board1, depth, alpha, beta, m, r) {
     for (let i = board1.moves.length - 1; i >= 0; i--) {
         const n = structuredClone(board1);
         setMove(n, board1.moves[order.indexOf(Math.max(...order))]);
-        order[order.indexOf(Math.max(...order))] = Infinity;
+        if (r) var j = order.indexOf(Math.max(...order));
+        order[order.indexOf(Math.max(...order))] = -Infinity;
         // setMove(n, board1.moves[i]);
         score = Math.min(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
-        if (r) if (Math.min(beta, score) < beta) winDex = i;
+        if (r) if (Math.min(beta, score) < beta) winDex = j;
         beta = Math.min(beta, score);
         if (score <= alpha) {
             break;
@@ -506,7 +509,6 @@ function evaluatePosition (board1) {
 function evalMaterials (board1) {
     const state = checkGameState(board1);
     if (state == "CheckMate") {
-        console.log('hi');
         return board1.whiteToMove ? Infinity : -Infinity;
     }
     if (state == "StaleMate" || state == "Fifty") {
