@@ -44,8 +44,8 @@ class Board {
     }
 }
 function setMove (board1, move) {
-    let capture = board.square[move.target] > 0;
-    let starttype = board.square[move.start];
+    let capture = board1.square[move.target] > 0;
+    let starttype = board1.square[move.start];
     board1.square[move.target] = board1.square[move.start];
     board1.square[move.start] = 0;
     if (move.start == 0 || move.target == 0 ) {

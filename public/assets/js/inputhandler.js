@@ -56,7 +56,13 @@ function moveWithSound (move, board) {
         }
     }
     if ((!board.isHuman.white && board.whiteToMove) || (!board.isHuman.black && !board.whiteToMove)) {
-        Evaluate(board, 4);
+        const w = new Worker('assets/js/calBestMove.js');
+        w.postMessage(board);
+        w.onmessage = (e) => {
+            moveWithSound(e.data, board);
+            w.terminate();
+            return true;
+        };
     }
     return true;
 }
