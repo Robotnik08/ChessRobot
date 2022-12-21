@@ -1,0 +1,1 @@
+//const game = new Worker('assets/js/main.js');

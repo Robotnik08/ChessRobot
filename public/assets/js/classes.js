@@ -10,6 +10,11 @@ class Piece {
     
         this.black = 8;
         this.white = 16;
+
+        this.directions = [8, -8, -1, 1, 7, -7, 9, -9];
+        this.kingDir = [8, 9, 1, -7, -8, -9, -1, 7];
+        this.knightDir = [15, 17, 10, -6, -15, -17, -10, 6];
+        this.valuesWhite = [0, null, null, null, null, null, null, null, null, -10000, -1000, -525, -350, -350, -100, null, null, 10000, 1000, 525, 350, 350, 100];
     }
 }
 class Board {

@@ -55,5 +55,8 @@ function moveWithSound (move, board) {
             document.getElementById("gameState").innerHTML = 'Draw by fifty move rule!';
         }
     }
+    if ((!board.isHuman.white && board.whiteToMove) || (!board.isHuman.black && !board.whiteToMove)) {
+        Evaluate(board, 4);
+    }
     return true;
 }

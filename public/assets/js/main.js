@@ -3,17 +3,14 @@ const ctx = can.getContext('2d');
 can.offscreenCanvas = document.createElement('canvas');
 can.offscreenCanvas.width = can.width;
 can.offscreenCanvas.height = can.height;
-
-const directions = [8, -8, -1, 1, 7, -7, 9, -9];
-const kingDir = [8, 9, 1, -7, -8, -9, -1, 7];
-const knightDir = [15, 17, 10, -6, -15, -17, -10, 6];
 const numToEdge = preComputedSlidingData();
 const preKnight = preComputedKnightData();
 const preKing = preComputedKingData();
+const piece = new Piece();
+const board = new Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', true, false);
+// rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 let mouse = {x:0,y:0};
-let piece = new Piece();
-let board = new Board('1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - 0 0', true, true);
-const valuesWhite = [0, null, null, null, null, null, null, null, null, 0, -1000, -525, -350, -350, -100, null, null, 0, 1000, 525, 350, 350, 100];
+
 
 
 
@@ -70,6 +67,13 @@ function filterLegal (board1) {
         }
     }
 }
+function orderMoves (board1) {
+    let prio = [];
+    for (let i = board1.moves.length - 1; i >= 0; i--) {
+        prio[i] = piece.valuesWhite[board1.square[board1.moves[i].start]] + piece.valuesWhite[board1.square[board1.moves[i].target]];
+    }
+    return prio;
+}
 function kingGenSlidingPin (board1, i) {
     let col = piece.white;
     if (board1.whiteToMove) {
@@ -83,12 +87,12 @@ function kingGenSlidingPin (board1, i) {
             p = piece.bishop;
         }
         for (let n = 0; n < numToEdge[i][dirI]; n++) {
-            let target = i + directions[dirI] * (n + 1);
+            let target = i + piece.directions[dirI] * (n + 1);
             let targetpiece = board1.square[target];
             if (hasFriend && (!(targetpiece ^ (col | p)) || !(targetpiece ^ (col | piece.queen)))) {
                 for (let k = board1.moves.length - 1; k > -1; k--) {
                     if (!(board1.moves[k].start ^ friendIndex)) {
-                        if (!Number.isInteger((friendIndex - board1.moves[k].target)/directions[dirI])) {
+                        if (!Number.isInteger((friendIndex - board1.moves[k].target)/piece.directions[dirI])) {
                             board1.moves.splice(k,1);
                         }
                         else if ((board1.moves[k].target/8|0) ^ (friendIndex/8|0) && !((i/8|0) ^ (friendIndex/8|0))) {
@@ -118,7 +122,7 @@ function genSliding (board1, i, type) {
     }
     for (let dirI = start; dirI < end; dirI++) {
         for (let n = 0; n < numToEdge[i][dirI]; n++) {
-            let target = i + directions[dirI] * (n + 1);
+            let target = i + piece.directions[dirI] * (n + 1);
             let targetpiece = board1.square[target];
 
             if (pieceIsColour(targetpiece, board1.whiteToMove)) {
@@ -194,15 +198,15 @@ function genPawn (board1, i, type) {
 }
 function genKnight (board1, i) {
     for (let j = 0; j < 8; j++) {
-        if (preKnight[i][j] && !pieceIsColour(board1.square[i + knightDir[j]], board1.whiteToMove)) {
-            board1.moves.push(new Move(i, i + knightDir[j]));
+        if (preKnight[i][j] && !pieceIsColour(board1.square[i + piece.knightDir[j]], board1.whiteToMove)) {
+            board1.moves.push(new Move(i, i + piece.knightDir[j]));
         }
     }
 }
 function genKing (board1, i) {
     for (let j = 0; j < 8; j++) {
-        if (preKing[i][j] && !pieceIsColour(board1.square[i + kingDir[j]], board1.whiteToMove) && !checkIfAttacked(board1, i + kingDir[j])) {
-            board1.moves.push(new Move(i, i + kingDir[j]));
+        if (preKing[i][j] && !pieceIsColour(board1.square[i + piece.kingDir[j]], board1.whiteToMove) && !checkIfAttacked(board1, i + piece.kingDir[j])) {
+            board1.moves.push(new Move(i, i + piece.kingDir[j]));
         }
     }
 }
@@ -219,36 +223,37 @@ function checkIfAttacked (board1, i) {
             p = piece.bishop;
         }
         for (let n = 0; n < numToEdge[i][dirI]; n++) {
-            let targetpiece = board1.square[i + directions[dirI] * (n + 1)];
+            let targetpiece = board1.square[i + piece.directions[dirI] * (n + 1)];
             if (targetpiece > 0) {
                 if (!(targetpiece ^ (col | p)) || !(targetpiece ^ (col | piece.queen))) {
                     return true;
                 }
                 if (!(targetpiece ^ (colme | piece.king))) {
                     continue;
+
                 }
                 break;
             }
         }
-        if ((preKnight[i][dirI] && !(board1.square[i+knightDir[dirI]] ^ (col | piece.knight)))) {
+        if ((preKnight[i][dirI] && !(board1.square[i+piece.knightDir[dirI]] ^ (col | piece.knight)))) {
             return true;
         }
-        if ((preKing[i][dirI] && !(board1.square[i+kingDir[dirI]] ^ (col | piece.king)))) {
+        if ((preKing[i][dirI] && !(board1.square[i+piece.kingDir[dirI]] ^ (col | piece.king)))) {
             return true;
         }
     }
     if (board1.whiteToMove) {
-        if ((preKing[i][1] && !(board1.square[i+kingDir[1]] ^ (col | piece.pawn)))) {
+        if ((preKing[i][1] && !(board1.square[i+piece.kingDir[1]] ^ (col | piece.pawn)))) {
             return true;
         }
-        if ((preKing[i][7] && !(board1.square[i+kingDir[7]] ^ (col | piece.pawn)))) {
+        if ((preKing[i][7] && !(board1.square[i+piece.kingDir[7]] ^ (col | piece.pawn)))) {
             return true;
         }
     } else {
-        if ((preKing[i][3] && !(board1.square[i+kingDir[3]] ^ (col | piece.pawn)))) {
+        if ((preKing[i][3] && !(board1.square[i+piece.kingDir[3]] ^ (col | piece.pawn)))) {
             return true;
         }
-        if ((preKing[i][5] && !(board1.square[i+kingDir[5]] ^ (col | piece.pawn)))) {
+        if ((preKing[i][5] && !(board1.square[i+piece.kingDir[5]] ^ (col | piece.pawn)))) {
             return true;
         }
     }
@@ -268,9 +273,9 @@ function filterCheckLegal (board1, i) {
     }
     let blockcheck = [];
     for (let dirI = 0; dirI < 8; dirI++) {
-        if ((preKnight[i][dirI] && !(board1.square[i+knightDir[dirI]] ^ (col | piece.knight)))) {
+        if ((preKnight[i][dirI] && !(board1.square[i+piece.knightDir[dirI]] ^ (col | piece.knight)))) {
             for (let j = board1.moves.length - 1; j > -1; j--) {
-                if (board1.moves[j].start ^ i && board1.moves[j].target ^ (i+knightDir[dirI])) {
+                if (board1.moves[j].start ^ i && board1.moves[j].target ^ (i+piece.knightDir[dirI])) {
                     board1.moves.splice(j,1);
                 }
             }
@@ -281,12 +286,12 @@ function filterCheckLegal (board1, i) {
             p = piece.bishop;
         }
         for (let n = 0; n < numToEdge[i][dirI]; n++) {
-            let targetpiece = board1.square[i + directions[dirI] * (n + 1)];
+            let targetpiece = board1.square[i + piece.directions[dirI] * (n + 1)];
             if (targetpiece > 0) {
                 if (!(targetpiece ^ (col | p)) || !(targetpiece ^ (col | piece.queen))) {
-                    blockcheck[i + directions[dirI] * (n + 1)] = true;
+                    blockcheck[i + piece.directions[dirI] * (n + 1)] = true;
                     for (let o = 0; o < n; o++) {
-                        blockcheck[i + directions[dirI] * (o + 1)] = true;
+                        blockcheck[i + piece.directions[dirI] * (o + 1)] = true;
                     }
                 }
                 break;
@@ -294,18 +299,18 @@ function filterCheckLegal (board1, i) {
         }          
     }
     if (board1.whiteToMove) {
-        if ((preKing[i][1] && !(board1.square[i+kingDir[1]] ^ (col | piece.pawn)))) {
-            blockcheck[i+kingDir[1]] = true;
+        if ((preKing[i][1] && !(board1.square[i+piece.kingDir[1]] ^ (col | piece.pawn)))) {
+            blockcheck[i+piece.kingDir[1]] = true;
         }
-        if ((preKing[i][7] && !(board1.square[i+kingDir[7]] ^ (col | piece.pawn)))) {
-            blockcheck[i+kingDir[7]] = true;
+        if ((preKing[i][7] && !(board1.square[i+piece.kingDir[7]] ^ (col | piece.pawn)))) {
+            blockcheck[i+piece.kingDir[7]] = true;
         }
     } else {
-        if ((preKing[i][3] && !(board1.square[i+kingDir[3]] ^ (col | piece.pawn)))) {
-            blockcheck[i+kingDir[3]] = true;
+        if ((preKing[i][3] && !(board1.square[i+piece.kingDir[3]] ^ (col | piece.pawn)))) {
+            blockcheck[i+piece.kingDir[3]] = true;
         }
-        if ((preKing[i][5] && !(board1.square[i+kingDir[5]] ^ (col | piece.pawn)))) {
-            blockcheck[i+kingDir[5]] = true;
+        if ((preKing[i][5] && !(board1.square[i+piece.kingDir[5]] ^ (col | piece.pawn)))) {
+            blockcheck[i+piece.kingDir[5]] = true;
         }
     }
     for (let j = board1.moves.length - 1; j > -1; j--) {
@@ -326,7 +331,7 @@ function countAttacks(board1, i) {
             p = piece.bishop;
         }
         for (let n = 0; n < numToEdge[i][dirI]; n++) {
-            let targetpiece = board1.square[i + directions[dirI] * (n + 1)];
+            let targetpiece = board1.square[i + piece.directions[dirI] * (n + 1)];
             if (targetpiece > 0) {
                 if (!(targetpiece ^ (col | p)) || !(targetpiece ^ (col | piece.queen))) {
                     count++;
@@ -334,25 +339,25 @@ function countAttacks(board1, i) {
                 break;
             }
         }
-        if ((preKnight[i][dirI] && !(board1.square[i+knightDir[dirI]] ^ (col | piece.knight)))) {
+        if ((preKnight[i][dirI] && !(board1.square[i+piece.knightDir[dirI]] ^ (col | piece.knight)))) {
             count++;
         }
-        if ((preKing[i][dirI] && !(board1.square[i+kingDir[dirI]] ^ (col | piece.king)))) {
+        if ((preKing[i][dirI] && !(board1.square[i+piece.kingDir[dirI]] ^ (col | piece.king)))) {
             count++;
         }
     }
     if (board1.whiteToMove) {
-        if ((preKing[i][1] && !(board1.square[i+kingDir[1]] ^ (col | piece.pawn)))) {
+        if ((preKing[i][1] && !(board1.square[i+piece.kingDir[1]] ^ (col | piece.pawn)))) {
             count++;
         }
-        if ((preKing[i][7] && !(board1.square[i+kingDir[7]] ^ (col | piece.pawn)))) {
+        if ((preKing[i][7] && !(board1.square[i+piece.kingDir[7]] ^ (col | piece.pawn)))) {
             count++;
         }
     } else {
-        if ((preKing[i][3] && !(board1.square[i+kingDir[3]] ^ (col | piece.pawn)))) {
+        if ((preKing[i][3] && !(board1.square[i+piece.kingDir[3]] ^ (col | piece.pawn)))) {
             count++;
         }
-        if ((preKing[i][5] && !(board1.square[i+kingDir[5]] ^ (col | piece.pawn)))) {
+        if ((preKing[i][5] && !(board1.square[i+piece.kingDir[5]] ^ (col | piece.pawn)))) {
             count++;
         }
     }
@@ -452,26 +457,71 @@ function checkGameState (board1) {
 }
 function Evaluate (board1, depth) {
     console.time('eval');
-    console.log(AlphaBeta(board1, depth));
+    const settings = structuredClone(board1.isHuman);
+    board1.isHuman = {white: false, black: false};
+    setMove(board1, AlphaBeta(board1, depth, -Infinity, +Infinity, board.whiteToMove, true));
+    board1.isHuman = settings;
     console.timeEnd('eval');
 }
-function AlphaBeta (board1, depth) {
-    let sum = 0;
-    checkLegal(board1);
-    for (let i = board1.moves.length - 1; i >= 0; i--) {
-        sum++;
-        if (depth - 1) {
+function AlphaBeta (board1, depth, alpha, beta, m, r) {
+    if (!(depth - 1)) return evaluatePosition(board1);
+    let score = Infinity;
+    if (r) var winDex = 0;
+    const order = orderMoves(board1);
+    if (m) {
+        score = -Infinity;
+        for (let i = board1.moves.length - 1; i >= 0; i--) {
             const n = structuredClone(board1);
-            setMove(n, board1.moves[i]);
-            sum += AlphaBeta(n, depth - 1);
+            setMove(n, board1.moves[order.indexOf(Math.max(...order))]);
+            order[order.indexOf(Math.max(...order))] = -Infinity;
+            // setMove(n, board1.moves[i]);
+            score = Math.max(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
+            if (r) if (Math.max(alpha, score) > alpha) winDex = i;
+            alpha = Math.max(alpha, score);
+            if (score >= beta) {
+                break;
+            }
+        }
+        if (r) return board1.moves[winDex];
+        return score;
+    }
+    for (let i = board1.moves.length - 1; i >= 0; i--) {
+        const n = structuredClone(board1);
+        setMove(n, board1.moves[order.indexOf(Math.max(...order))]);
+        order[order.indexOf(Math.max(...order))] = Infinity;
+        // setMove(n, board1.moves[i]);
+        score = Math.min(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
+        if (r) if (Math.min(beta, score) < beta) winDex = i;
+        beta = Math.min(beta, score);
+        if (score <= alpha) {
+            break;
         }
     }
-    return sum;
+    if (r) return board1.moves[winDex];
+    return score;
 }
-function evalMaterials (s) {
-    let eval = 0;
-    for (let i = 0; i < 64; i++) {
-        eval += valuesWhite[s[i]];
+function evaluatePosition (board1) {
+    return evalMaterials(board1);
+}
+function evalMaterials (board1) {
+    const state = checkGameState(board1);
+    if (state == "CheckMate") {
+        console.log('hi');
+        return board1.whiteToMove ? Infinity : -Infinity;
     }
-    return eval;
+    if (state == "StaleMate" || state == "Fifty") {
+        return 0;
+    }
+    let val = 0;
+    for (let i = 0; i < 64; i++) {
+        val += piece.valuesWhite[board1.square[i]];
+    }
+    return val;
+}
+function logArray (s) {
+    str = "[";
+    for (let i in s) {
+        str += `${s[i]}, `;
+    }
+    console.log(`${str.slice(0,-2)}]`);
 }
