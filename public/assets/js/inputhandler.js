@@ -30,12 +30,12 @@ function clickup () {
         board.selectedTile = null;
     }
 }
-function moveWithSound (move, board) {
+function moveWithSound (move, board1) {
     if (move == false) {
-        board.selectedTile = null;
+        board1.selectedTile = null;
         return false;
     }
-    const capture = setMove(board, move);
+    const capture = setMove(board1, move);
     if (capture) {
         capturesound.currentTime = 0;
         capturesound.play();
@@ -43,10 +43,10 @@ function moveWithSound (move, board) {
         movesound.currentTime = 0;
         movesound.play();
     }
-    const state = checkGameState(board);
+    const state = checkGameState(board1);
     if (state != "Play") {
         if (state == "CheckMate") {
-            document.getElementById("gameState").innerHTML = `CheckMate! ${(board.whiteToMove ? "Black" : "White")} wins!!`;
+            document.getElementById("gameState").innerHTML = `CheckMate! ${(board1.whiteToMove ? "Black" : "White")} wins!!`;
         }
         else if (state == "Stalemate") {
             document.getElementById("gameState").innerHTML =  'Draw by stalemate!';
@@ -55,14 +55,17 @@ function moveWithSound (move, board) {
             document.getElementById("gameState").innerHTML = 'Draw by fifty move rule!';
         }
     }
-    if ((!board.isHuman.white && board.whiteToMove) || (!board.isHuman.black && !board.whiteToMove)) {
+    if ((!board1.isHuman.white && board1.whiteToMove) || (!board1.isHuman.black && !board1.whiteToMove)) {
         const w = new Worker('assets/js/calBestMove.js');
-        w.postMessage(board);
+        w.postMessage(board1);
         w.onmessage = (e) => {
-            moveWithSound(e.data, board);
+            moveWithSound(parseObjToClass(e.data), board1);
             w.terminate();
             return true;
         };
     }
     return true;
+}
+function parseObjToClass (m) {
+    return m.promote != "undefined" ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
 }

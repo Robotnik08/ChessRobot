@@ -38,6 +38,7 @@ class PawnLeap {
     constructor (s, t) {
         this.start = s;
         this.target = t;
+        this.leap = true;
     }
 }
 
@@ -51,11 +52,14 @@ onmessage = (e) => {
 function Evaluate (board1, depth) {
     const settings = structuredClone(board1.isHuman);
     board1.isHuman = {white: false, black: false};
+    for (let i = board1.moves.length - 1; i >= 0; i--) {
+        board1.moves[i] = parseObjToClass(board1.moves[i]);
+    }
     postMessage(AlphaBeta(board1, depth, -Infinity, +Infinity, board1.whiteToMove, true));
     board1.isHuman = settings;
 }
 function AlphaBeta (board1, depth, alpha, beta, m, r) {
-    if (!(depth - 1)) return evaluatePosition(board1);
+    if (!(depth - 1) || !board1.moves.length) return evaluatePosition(board1);
     let score = Infinity;
     if (r) var winDex = 0;
     const order = orderMoves(board1);
@@ -99,7 +103,7 @@ function evaluatePosition (board1) {
 function evalMaterials (board1) {
     const state = checkGameState(board1);
     if (state == "CheckMate") {
-        return board1.whiteToMove ? Infinity : -Infinity;
+        return board1.whiteToMove ? -Infinity : Infinity;
     }
     if (state == "StaleMate" || state == "Fifty") {
         return 0;
@@ -567,7 +571,7 @@ function countAttacks(board1, i) {
 }
 function checkValid (s, t, board1) {
     for (let i = 0; i < board1.moves.length; i++) {
-        if (board1.moves[i].start == s && board.moves[i].target == t) {
+        if (board1.moves[i].start == s && board1.moves[i].target == t) {
             return board1.moves[i];
         }
     }
@@ -653,4 +657,7 @@ function getKingDex (board1) {
     }
     console.log('not founds?')
     return 0;
+}
+function parseObjToClass (m) {
+    return m.promote != "undefined" ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
 }
