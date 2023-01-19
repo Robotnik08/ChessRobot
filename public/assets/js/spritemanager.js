@@ -33,6 +33,8 @@ castlesound.src = './assets/audio/capture.mp3';
 
 const lightSquare = '#ffe6cc';
 const darkSquare = '#804200';
+let lastMoveStart = null;
+let lastMoveEnd = null;
 
 
 //draw
@@ -57,6 +59,14 @@ function update () {
     ctx.clearRect(0,0,can.width,can.height);
     ctx.drawImage(can.offscreenCanvas, 0, 0);
     if (board.whiteToMove || (!board.whiteToMove && !board.isHuman.black)) {
+        if (lastMoveStart != null) {
+            ctx.fillStyle = 'rgba(120, 120, 255, 0.6)';
+            ctx.fillRect(((lastMoveStart/8-((lastMoveStart/8)|0))*8)*(can.width/8|0),(7-((lastMoveStart/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
+        }
+        if (lastMoveEnd != null) {
+            ctx.fillStyle = 'rgba(90, 90, 255, 0.6)';
+            ctx.fillRect(((lastMoveEnd/8-((lastMoveEnd/8)|0))*8)*(can.width/8|0),(7-((lastMoveEnd/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
+        }
         for (let i = 0; i < 64; i++) {
             if (sprites[board.square[i]] != null && i != board.selectedTile) {
                 ctx.drawImage(sprites[board.square[i]],((i/8-((i/8)|0))*8)*(can.width/8|0),(7-((i/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
@@ -72,6 +82,7 @@ function update () {
             ctx.fillRect(((board.selectedTile/8-((board.selectedTile/8)|0))*8)*(can.width/8|0),(7-((board.selectedTile/8)|0))*(can.height/8|0),can.width/8|0,can.height/8|0);
             ctx.drawImage(sprites[board.square[board.selectedTile]],(mouse.x-(can.width/8)/2)|0,(mouse.y-(can.height/8)/2)|0,(can.width/8)|0,(can.height/8)|0);
         }
+        
     } else {
         for (let i = 0; i < 64; i++) {
             if (sprites[board.square[i]] != null && i != board.selectedTile) {

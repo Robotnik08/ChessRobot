@@ -43,10 +43,13 @@ function moveWithSound (move, board1) {
         movesound.currentTime = 0;
         movesound.play();
     }
+    lastMoveStart = move.start;
+    lastMoveEnd = move.target;
     const state = checkGameState(board1);
     if (state != "Play") {
         if (state == "CheckMate") {
             document.getElementById("gameState").innerHTML = `CheckMate! ${(board1.whiteToMove ? "Black" : "White")} wins!!`;
+            return;
         }
         else if (state == "Stalemate") {
             document.getElementById("gameState").innerHTML =  'Draw by stalemate!';

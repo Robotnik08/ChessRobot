@@ -31,11 +31,11 @@ class Piece {
                 //Black Queen
                 0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5, //line 1
                 3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
-                3  , 6  , 8  , 8  , 8  , 8  , 6  , 3  , //line 3
-                5  , 6  , 8  , 8  , 8  , 8  , 6  , 5  , //line 4
-                6  , 6  , 8  , 8  , 8  , 8  , 5.5, 5  , //line 5
-                3  , 8  , 8  , 8  , 8  , 8  , 5.5, 3  , //line 6
-                3  , 5.5, 8  , 8  , 8  , 5.5, 5.5, 3  , //line 7
+                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
+                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
+                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
+                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
+                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
                 0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5  //line 8
             ], [
                 //Black Rook
@@ -71,10 +71,10 @@ class Piece {
                 //Black Pawn
                 1  , 1  , 1  , 1  , 1  , 1  , 1  , 1  , //line 1
                 10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
-                3  , 3  , 4  , 6  , 6  , 4  , 3  , 3  , //line 3
-                3  , 3  , 3.5, 6  , 6  , 3.5, 3  , 3  , //line 4
-                2.5, 2.5, 2.5, 10 , 10 , 2.5, 2.5, 2.5, //line 5
-                3  , 1.5, 1  , 3  , 3  , 1  , 1.5, 3  , //line 6
+                3  , 3  , 5  , 6  , 6  , 5  , 3  , 3  , //line 3
+                3  , 3  , 6  , 9  , 9  , 6  , 3  , 3  , //line 4
+                2.5, 2.5, 2.5, 15 , 15 , 2.5, 2.5, 2.5, //line 5
+                3  , 1.5, 5  , 3  , 3  , 5  , 1.5, 3  , //line 6
                 3  , 4  , 4  , 0  , 0  , 4  , 4  , 3  , //line 7
                 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0    //line 8
             ], null, null,
@@ -91,11 +91,11 @@ class Piece {
             ], [
                 //White Queen
                 0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5, //line 8
-                3  , 5.5, 8  , 8  , 8  , 5.5, 5.5, 3  , //line 7
-                3  , 8  , 8  , 8  , 8  , 8  , 5.5, 3  , //line 6
-                6  , 6  , 8  , 8  , 8  , 8  , 5.5, 5  , //line 5
-                5  , 6  , 8  , 8  , 8  , 8  , 6  , 5  , //line 4
-                3  , 6  , 8  , 8  , 8  , 8  , 6  , 3  , //line 3
+                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
+                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
+                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
+                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
+                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
                 3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
                 0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5  //line 1
             ], [
@@ -133,7 +133,7 @@ class Piece {
                 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , //line 8
                 3  , 4  , 4  , 0  , 0  , 4  , 4  , 3  , //line 7
                 3  , 1.5, 1  , 3  , 3  , 1  , 1.5, 3  , //line 6
-                2.5, 2.5, 2.5, 10 , 10 , 2.5, 2.5, 2.5, //line 5
+                2.5, 2.5, 2.5, 14 , 14 , 2.5, 2.5, 2.5, //line 5
                 3  , 3  , 3.5, 6  , 6  , 3.5, 3  , 3  , //line 4
                 3  , 3  , 4  , 6  , 6  , 4  , 3  , 3  , //line 3
                 10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
@@ -171,8 +171,10 @@ const numToEdge = preComputedSlidingData();
 const preKnight = preComputedKnightData();
 const preKing = preComputedKingData();
 const piece = new Piece();
+const endgameStrength = 0.5;
+const depth = 6;
 onmessage = (e) => {
-    Evaluate(e.data, 6);
+    Evaluate(e.data, ((1+(1*endgameStrength-getWeight(e.data.square)*endgameStrength))*depth) | 0);
 };
 function Evaluate (board1, depth) {
     board1.isHuman = {white: false, black: false};
