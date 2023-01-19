@@ -6,12 +6,16 @@
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
     <body>
-        <h1 id="gameState"></h1>
-        <canvas id="main" width="1024" height="1024" onmousemove="getMouse(event)" onmouseup="clickup()" onmousedown="clickdown(); getMouse(event)"></canvas>
+        <h1 id="gameState">You versus the Slome Chess Robot</h1>
+        <button id="smaller" onclick="changeSize(-0.1)">-</button>Change Game Window Size<button id="larger" onclick="changeSize(0.1)">+</button>
+        <canvas id="main" width="720" height="720" onmousemove="getMouse(event)" onmouseup="clickup()" onmousedown="clickdown(); getMouse(event)"></canvas>
         <script src="assets/js/classes.js"></script>
+        <script src="assets/js/inputhandler.js"></script>
         <script src="assets/js/setup.js"></script>
         <script src="assets/js/main.js"></script>
-        <script src="assets/js/inputhandler.js"></script>
         <script src="assets/js/spritemanager.js"></script>
+        <h2>&copy; Sebastiaan Heins 2023</h2>
+        <h2><a href="https://discord.gg/mp3HkYFQtC" style="text-decoration: none;">My discord.</a></h2>
+        <p>Version 0.2 | actively being worked on</p>
     </body>
 </html>

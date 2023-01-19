@@ -225,37 +225,6 @@ function AlphaBeta (board1, depth, alpha, beta, m, r) {
         return score;
     }
 }
-function AlphaBetaCaptures (board1, alpha, beta, m) {
-    trimHalfMoves(board1);
-    if (!board1.moves.length) return evaluatePosition(board1);
-    let score = Infinity;
-    const order = orderMoves(board1);
-    if (m) {
-        score = -Infinity;
-        for (let i = board1.moves.length - 1; i >= 0; i--) {
-            const n = structuredClone(board1);
-            setMove(n, board1.moves[order.indexOf(Math.min(...order))]);
-            order[order.indexOf(Math.min(...order))] = Infinity;
-            score = Math.max(score, AlphaBetaCaptures(n, alpha, beta, !m));
-            alpha = Math.max(alpha, score);
-            if (score >= beta) {
-                break;
-            }
-        }
-        return score;
-    }
-    for (let i = board1.moves.length - 1; i >= 0; i--) {
-        const n = structuredClone(board1);
-        setMove(n, board1.moves[order.indexOf(Math.max(...order))]);
-        order[order.indexOf(Math.max(...order))] = -Infinity;
-        score = Math.min(score, AlphaBetaCaptures(n, alpha, beta, !m));
-        beta = Math.min(beta, score);
-        if (score <= alpha) {
-            break;
-        }
-    }
-    return score;
-}
 
 function evaluatePosition (board1) {
     return evalMaterials(board1);
@@ -274,7 +243,7 @@ function evalMaterials (board1) {
     for (let i = 0; i < 64; i++) {
         val += piece.valuesWhite[board1.square[i]];
         if (board1.square[i]) {
-            val += piece.valuesPosition[board1.square[i]][i] * endGameWeight;
+            val += piece.valuesPosition[board1.square[i]][i] * endGameWeight * (pieceIsColour(board1.square[i], true) ? 1 : -1);
         }
     }
     return val;

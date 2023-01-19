@@ -1,8 +1,13 @@
-body {
-    height: 90%;
-    width: 90%;
+html, body {
+    height: 100%;
+    width: 100%;
     margin: 0;
     overflow-x: hidden;
+    font-family: url("../../../slome_3_hex.ttf");
+    text-align: center;
+    font-size: 2vh;
+    color:white;
+    background-color: black;
 }
 #main {
     /* height: 95%;
@@ -16,6 +21,9 @@ body {
     image-rendering: crisp-edges;
     border: 25px black solid;
 }
-#gameState {
-    text-align: center;
+button {
+    width: 5vh;
+    height: 5vh;
+    border-radius: 100px;
+    font-size: 2vh;
 }

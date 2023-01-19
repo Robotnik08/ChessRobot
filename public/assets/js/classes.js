@@ -166,6 +166,9 @@ class Board {
         this.selectedTile = null;
         setupBoard(FEN, this);
         checkLegal(this);
+        if (!this.isHuman.white == this.whiteToMove || !this.isHuman.black == !this.whiteToMove) {
+            botMove(this);
+        }
     }
 }
 function setMove (board1, move) {
