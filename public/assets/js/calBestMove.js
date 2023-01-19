@@ -174,7 +174,8 @@ const piece = new Piece();
 const endgameStrength = 0.5;
 const depth = 6;
 onmessage = (e) => {
-    Evaluate(e.data, ((1+(1*endgameStrength-getWeight(e.data.square)*endgameStrength))*depth) | 0);
+    // Evaluate(e.data, ((1+(1*endgameStrength-getWeight(e.data.square)*endgameStrength))*depth) | 0);
+    Evaluate(e.data, depth);
 };
 function Evaluate (board1, depth) {
     board1.isHuman = {white: false, black: false};

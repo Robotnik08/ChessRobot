@@ -1,10 +1,20 @@
 //inputhandler
+let sel = false;
 function getMouse (ev) {
     mouse.x = ev.x-document.getElementById("main").offsetLeft - 25;
     mouse.y = ev.y-document.getElementById("main").offsetTop - 25;
 }
 
 function clickdown () {
+    if (sel) {
+        if (((mouse.x/(can.width/8))|0) + 8*(8 - (mouse.y/(can.height/8))|0) != board.selectedTile) {
+            clickup();
+        }
+        else {
+            return;
+
+        }
+    }
     if (mouse.x <= 0 || mouse.y <= 0) {return;}
     if (board.whiteToMove || (!board.whiteToMove && !board.isHuman.black)) {
         board.selectedTile = ((mouse.x/(can.width/8))|0) + 8*(8 - (mouse.y/(can.height/8))|0);
@@ -19,8 +29,8 @@ function clickup () {
         x: board.whiteToMove || (!board.whiteToMove && !board.isHuman.black) ? mouse.x : can.width - mouse.x,
         y: board.whiteToMove || (!board.whiteToMove && !board.isHuman.black) ? mouse.y : can.height - mouse.y
     }
-    if (((mouseposextract.x/(can.width/8))|0) + 8*(8 - (mouseposextract.y/(can.height/8))|0) == board.selectedTile) {board.selectedTile = null; return;}
-    
+    if (((mouseposextract.x/(can.width/8))|0) + 8*(8 - (mouseposextract.y/(can.height/8))|0) == board.selectedTile) {sel =true; return;}
+    sel = false;
     if (board.square[board.selectedTile] == piece.none) {return;}
 
     if ((board.whiteToMove && board.isHuman.white) || (!board.whiteToMove && board.isHuman.black)) {

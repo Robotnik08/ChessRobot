@@ -7,7 +7,7 @@
     </head>
     <body>
         <h1 id="gameState"></h1>
-        <canvas id="main" width="1024" height="1024" onmousemove="getMouse(event)" onmousedown="clickdown()" onmouseup="clickup()"></canvas>
+        <canvas id="main" width="1024" height="1024" onmousemove="getMouse(event)" onmouseup="clickup()" onmousedown="clickdown(); getMouse(event)"></canvas>
         <script src="assets/js/classes.js"></script>
         <script src="assets/js/setup.js"></script>
         <script src="assets/js/main.js"></script>
