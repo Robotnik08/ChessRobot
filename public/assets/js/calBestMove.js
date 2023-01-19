@@ -196,9 +196,9 @@ function AlphaBeta (board1, depth, alpha, beta, m, r) {
             score = -Infinity;
             for (let i = board1.moves.length - 1; i >= 0; i--) {
                 const n = structuredClone(board1);
-                m = board1.moves[order.indexOf(Math.min(...order))];
-                if (m.castle != null) m = parseObjToClass(m);
-                setMove(n, m);
+                let move2 = board1.moves[order.indexOf(Math.min(...order))];
+                if (move2.castle != null) move2 = parseObjToClass(move2);
+                setMove(n, move2);
                 if (r) var j = order.indexOf(Math.min(...order));
                 order[order.indexOf(Math.min(...order))] = Infinity;
                 score = Math.max(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
@@ -213,9 +213,9 @@ function AlphaBeta (board1, depth, alpha, beta, m, r) {
         }
         for (let i = board1.moves.length - 1; i >= 0; i--) {
             const n = structuredClone(board1);
-            m = board1.moves[order.indexOf(Math.max(...order))];
-            if (m.castle != null) m = parseObjToClass(m);
-            setMove(n, m);
+            let move2 = board1.moves[order.indexOf(Math.max(...order))];
+            if (m.castle != null) move2 = parseObjToClass(move2);
+            setMove(n, move2);
             if (r) var j = order.indexOf(Math.max(...order));
             order[order.indexOf(Math.max(...order))] = -Infinity;
             score = Math.min(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
