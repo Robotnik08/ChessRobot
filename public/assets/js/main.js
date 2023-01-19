@@ -7,7 +7,8 @@ const numToEdge = preComputedSlidingData();
 const preKnight = preComputedKnightData();
 const preKing = preComputedKingData();
 const piece = new Piece();
-const board = new Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', true, false);
+const player = Math.round(Math.random());
+const board = new Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', player, !player);
 const mouse = {x:0,y:0};
 // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 

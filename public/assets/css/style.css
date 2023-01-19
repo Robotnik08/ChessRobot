@@ -3,11 +3,18 @@ html, body {
     width: 100%;
     margin: 0;
     overflow-x: hidden;
-    font-family: url("../../../slome_3_hex.ttf");
+    font-family: slome;
     text-align: center;
     font-size: 2vh;
     color:white;
     background-color: black;
+}
+* {
+    font-weight: normal;
+}
+@font-face {
+    font-family: slome;
+    src: url("slome_3_hex.ttf");
 }
 #main {
     /* height: 95%;

@@ -59,10 +59,10 @@ class Piece {
                 0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5  //line 8
             ], [
                 //Black Knight
-                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5, //line 1
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5, //line 1
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 2
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
-                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 4
+                3  , 6  , 7  , 12 , 12 , 7  , 6  , 3  , //line 4
                 3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
@@ -124,10 +124,10 @@ class Piece {
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
                 3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
-                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 4
+                3  , 6  , 7  , 12 , 12 , 7  , 6  , 3  , //line 4
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 2
-                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5  //line 1
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5  //line 1
             ], [
                 //White Pawn
                 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , //line 8
@@ -800,5 +800,5 @@ function getKingDex (board1) {
     return 0;
 }
 function parseObjToClass (m) {
-    return m.promote != "undefined" ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
+    return m.promote != null ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
 }

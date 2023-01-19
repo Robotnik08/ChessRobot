@@ -45,6 +45,7 @@ function botMove(board1) {
     const w = new Worker('assets/js/calBestMove.js');
     w.postMessage(board1);
     w.onmessage = (e) => {
+        console.log(parseObjToClass(e.data).constructor.name);
         moveWithSound(parseObjToClass(e.data), board1);
         w.terminate();
         return true;
@@ -84,5 +85,5 @@ function moveWithSound (move, board1) {
     return true;
 }
 function parseObjToClass (m) {
-    return m.promote != "undefined" ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
+    return m.promote != null ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
 }

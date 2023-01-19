@@ -59,10 +59,10 @@ class Piece {
                 0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5  //line 8
             ], [
                 //Black Knight
-                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5, //line 1
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5, //line 1
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 2
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
-                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 4
+                3  , 6  , 7  , 12 , 12 , 7  , 6  , 3  , //line 4
                 3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
@@ -124,10 +124,10 @@ class Piece {
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
                 3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
-                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 4
+                3  , 6  , 7  , 12 , 12 , 7  , 6  , 3  , //line 4
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 2
-                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5  //line 1
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5  //line 1
             ], [
                 //White Pawn
                 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , //line 8
@@ -166,7 +166,7 @@ class Board {
         this.selectedTile = null;
         setupBoard(FEN, this);
         checkLegal(this);
-        if (!this.isHuman.white == this.whiteToMove || !this.isHuman.black == !this.whiteToMove) {
+        if ((!this.isHuman.white && this.whiteToMove) || (!this.isHuman.black && !this.whiteToMove)) {
             botMove(this);
         }
     }
@@ -176,18 +176,18 @@ function setMove (board1, move) {
     let starttype = board1.square[move.start];
     board1.square[move.target] = board1.square[move.start];
     board1.square[move.start] = 0;
-    if (move.start == 0 || move.target == 0 ) {
+    if (!move.start || !move.target) {
         board1.castleQ = false;
-    } else if (move.start == 7 || move.target == 7) {
+    } else if (!(move.start ^ 7) || !(move.target ^ 7)) {
         board1.castleK = false;
-    } else if (move.start == 55 || move.target == 55) {
+    } else if (!(move.start ^ 55) || !(move.target ^ 55)) {
         board1.castleq = false;
-    } else if (move.start == 63 || move.target == 63) {
+    } else if (!(move.start ^ 63) || !(move.target ^ 63)) {
         board1.castlek = false;
-    } else if (move.start == 4) {
+    } else if (!(move.start ^ 4)) {
         board1.castleK = false;
         board1.castleQ = false;
-    } else if (move.start == 60) {
+    } else if (!(move.start ^ 60)) {
         board1.castlek = false;
         board1.castleq = false;
     }
@@ -295,6 +295,7 @@ class PawnLeap {
     constructor (s, t) {
         this.start = s;
         this.target = t;
+        this.leap = true;
     }
 }
 
