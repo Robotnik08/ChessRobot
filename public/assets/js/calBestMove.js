@@ -14,7 +14,132 @@ class Piece {
         this.directions = [8, -8, -1, 1, 7, -7, 9, -9];
         this.kingDir = [8, 9, 1, -7, -8, -9, -1, 7];
         this.knightDir = [15, 17, 10, -6, -15, -17, -10, 6];
-        this.valuesWhite = [0, null, null, null, null, null, null, null, null, -10000, -1000, -525, -350, -350, -100, null, null, 10000, 1000, 525, 350, 350, 100];
+        this.valuesWhite = [0, null, null, null, null, null, null, null, null, 0, -1000, -525, -350, -350, -100, null, null, 0, 1000, 525, 350, 350, 100];
+
+        this.valuesPosition = [null, null, null, null, null, null, null, null, null, 
+            [
+                //Black King
+                0.5, 0.5, 0.5, 0  , 0  , 0.5, 0.5, 0.5, //line 1
+                0.5, 0.5, 0.5, 0  , 0  , 0.5, 0.5, 0.5, //line 2
+                1  , 0.5, 0.5, 0  , 0  , 0.5, 0.5, 1  , //line 3
+                1  , 0.5, 0.5, 0  , 0  , 0.5, 0.5, 1  , //line 4
+                2  , 1  , 1  , 0.5, 0.5, 1  , 1  , 2  , //line 5
+                3  , 2  , 2  , 2  , 2  , 2  , 2  , 3  , //line 6
+                5  , 5  , 3  , 3  , 3  , 3  , 5  , 5  , //line 7
+                7  , 11 , 4  , 3.5, 3.5, 4  , 11 , 7    //line 8
+            ], [
+                //Black Queen
+                0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5, //line 1
+                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
+                3  , 6  , 8  , 8  , 8  , 8  , 6  , 3  , //line 3
+                5  , 6  , 8  , 8  , 8  , 8  , 6  , 5  , //line 4
+                6  , 6  , 8  , 8  , 8  , 8  , 5.5, 5  , //line 5
+                3  , 8  , 8  , 8  , 8  , 8  , 5.5, 3  , //line 6
+                3  , 5.5, 8  , 8  , 8  , 5.5, 5.5, 3  , //line 7
+                0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5  //line 8
+            ], [
+                //Black Rook
+                4  , 4  , 4  , 4  , 4  , 4  , 4  , 4  , //line 1
+                5.5, 9  , 9  , 9  , 9  , 9  , 9  , 5.5, //line 2
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 3
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 4
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 5
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 6
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 7
+                3  , 3.5, 4  , 6.5, 6.5, 4  , 3.5, 3    //line 8
+            ], [
+                //Black Bishop
+                0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5, //line 1
+                2  , 4  , 4  , 4  , 4  , 4  , 4  , 2  , //line 2
+                2  , 4  , 5  , 6  , 6  , 5  , 4  , 2  , //line 3
+                2  , 5  , 5  , 6  , 6  , 5  , 5  , 2  , //line 4
+                2  , 4  , 8  , 6  , 6  , 8  , 4  , 2  , //line 5
+                2  , 6  , 6  , 6  , 6  , 6  , 6  , 2  , //line 6
+                2  , 6  , 4  , 4  , 4  , 4  , 6  , 2  , //line 7
+                0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5  //line 8
+            ], [
+                //Black Knight
+                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5, //line 1
+                1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 2
+                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
+                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 4
+                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
+                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
+                1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
+                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5  //line 8
+            ], [
+                //Black Pawn
+                1  , 1  , 1  , 1  , 1  , 1  , 1  , 1  , //line 1
+                10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
+                3  , 3  , 4  , 6  , 6  , 4  , 3  , 3  , //line 3
+                3  , 3  , 3.5, 6  , 6  , 3.5, 3  , 3  , //line 4
+                2.5, 2.5, 2.5, 10 , 10 , 2.5, 2.5, 2.5, //line 5
+                3  , 1.5, 1  , 3  , 3  , 1  , 1.5, 3  , //line 6
+                3  , 4  , 4  , 0  , 0  , 4  , 4  , 3  , //line 7
+                0  , 0  , 0  , 0  , 0  , 0  , 0  , 0    //line 8
+            ], null, null,
+            [
+                //White King
+                7  , 11 , 4  , 3.5, 3.5, 4  , 11 , 7  , //line 8
+                5  , 5  , 3  , 3  , 3  , 3  , 5  , 5  , //line 7
+                3  , 2  , 2  , 2  , 2  , 2  , 2  , 3  , //line 6
+                2  , 1  , 1  , 0.5, 0.5, 1  , 1  , 2  , //line 5
+                1  , 0.5, 0.5, 0  , 0  , 0.5, 0.5, 1  , //line 4
+                1  , 0.5, 0.5, 0  , 0  , 0.5, 0.5, 1  , //line 3
+                0.5, 0.5, 0.5, 0  , 0  , 0.5, 0.5, 0.5, //line 2
+                0.5, 0.5, 0.5, 0  , 0  , 0.5, 0.5, 0.5  //line 1
+            ], [
+                //White Queen
+                0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5, //line 8
+                3  , 5.5, 8  , 8  , 8  , 5.5, 5.5, 3  , //line 7
+                3  , 8  , 8  , 8  , 8  , 8  , 5.5, 3  , //line 6
+                6  , 6  , 8  , 8  , 8  , 8  , 5.5, 5  , //line 5
+                5  , 6  , 8  , 8  , 8  , 8  , 6  , 5  , //line 4
+                3  , 6  , 8  , 8  , 8  , 8  , 6  , 3  , //line 3
+                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
+                0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5  //line 1
+            ], [
+                //White Rook
+                3  , 3.5, 4  , 6.5, 6.5, 4  , 3.5, 3  , //line 8
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 7
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 6
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 5
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 4
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 3
+                5.5, 9  , 9  , 9  , 9  , 9  , 9  , 5.5, //line 2
+                4  , 4  , 4  , 4  , 4  , 4  , 4  , 4    //line 1
+            ], [
+                //White Bishop
+                0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5, //line 8
+                2  , 6  , 4  , 4  , 4  , 4  , 6  , 2  , //line 7
+                2  , 6  , 6  , 6  , 6  , 6  , 6  , 2  , //line 6
+                2  , 4  , 8  , 6  , 6  , 8  , 4  , 2  , //line 5
+                2  , 5  , 5  , 6  , 6  , 5  , 5  , 2  , //line 4
+                2  , 4  , 5  , 6  , 6  , 5  , 4  , 2  , //line 3
+                2  , 4  , 4  , 4  , 4  , 4  , 4  , 2  , //line 2
+                0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5  //line 1
+            ], [
+                //White Knight
+                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5, //line 8
+                1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
+                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
+                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
+                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 4
+                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
+                1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 2
+                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5  //line 1
+            ], [
+                //White Pawn
+                0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , //line 8
+                3  , 4  , 4  , 0  , 0  , 4  , 4  , 3  , //line 7
+                3  , 1.5, 1  , 3  , 3  , 1  , 1.5, 3  , //line 6
+                2.5, 2.5, 2.5, 10 , 10 , 2.5, 2.5, 2.5, //line 5
+                3  , 3  , 3.5, 6  , 6  , 3.5, 3  , 3  , //line 4
+                3  , 3  , 4  , 6  , 6  , 4  , 3  , 3  , //line 3
+                10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
+                1  , 1  , 1  , 1  , 1  , 1  , 1  , 1    //line 1
+            ]
+        ]
     }
 }
 class Move {
@@ -50,49 +175,82 @@ onmessage = (e) => {
     Evaluate(e.data, 6);
 };
 function Evaluate (board1, depth) {
-    const settings = structuredClone(board1.isHuman);
     board1.isHuman = {white: false, black: false};
     for (let i = board1.moves.length - 1; i >= 0; i--) {
         board1.moves[i] = parseObjToClass(board1.moves[i]);
     }
     postMessage(AlphaBeta(board1, depth, -Infinity, +Infinity, board1.whiteToMove, true));
-    board1.isHuman = settings;
 }
 function AlphaBeta (board1, depth, alpha, beta, m, r) {
-    if (!(depth - 1) || !board1.moves.length) return evaluatePosition(board1);
-    let score = Infinity;
-    if (r) var winDex = 0;
-    const order = orderMoves(board1);
-    if (m) {
-        score = -Infinity;
+    if (!board1.moves.length) return evaluatePosition(board1);
+    if (!(depth - 1)) {
+        return evaluatePosition(board1);
+    } else {
+        let score = Infinity;
+        if (r) var winDex = 0;
+        const order = orderMoves(board1);
+        if (m) {
+            score = -Infinity;
+            for (let i = board1.moves.length - 1; i >= 0; i--) {
+                const n = structuredClone(board1);
+                setMove(n, board1.moves[order.indexOf(Math.min(...order))]);
+                if (r) var j = order.indexOf(Math.min(...order));
+                order[order.indexOf(Math.min(...order))] = Infinity;
+                score = Math.max(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
+                if (r) if (Math.max(alpha, score) > alpha) winDex = j;
+                alpha = Math.max(alpha, score);
+                if (score >= beta) {
+                    break;
+                }
+            }
+            if (r) return board1.moves[winDex];
+            return score;
+        }
         for (let i = board1.moves.length - 1; i >= 0; i--) {
             const n = structuredClone(board1);
-            setMove(n, board1.moves[order.indexOf(Math.min(...order))]);
-            if (r) var j = order.indexOf(Math.min(...order));
-            order[order.indexOf(Math.min(...order))] = Infinity;
-            score = Math.max(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
-            if (r) if (Math.max(alpha, score) > alpha) winDex = j;
-            alpha = Math.max(alpha, score);
-            if (score >= beta) {
+            setMove(n, board1.moves[order.indexOf(Math.max(...order))]);
+            if (r) var j = order.indexOf(Math.max(...order));
+            order[order.indexOf(Math.max(...order))] = -Infinity;
+            score = Math.min(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
+            if (r) if (Math.min(beta, score) < beta) winDex = j;
+            beta = Math.min(beta, score);
+            if (score <= alpha) {
                 break;
             }
         }
         if (r) return board1.moves[winDex];
         return score;
     }
+}
+function AlphaBetaCaptures (board1, alpha, beta, m) {
+    trimHalfMoves(board1);
+    if (!board1.moves.length) return evaluatePosition(board1);
+    let score = Infinity;
+    const order = orderMoves(board1);
+    if (m) {
+        score = -Infinity;
+        for (let i = board1.moves.length - 1; i >= 0; i--) {
+            const n = structuredClone(board1);
+            setMove(n, board1.moves[order.indexOf(Math.min(...order))]);
+            order[order.indexOf(Math.min(...order))] = Infinity;
+            score = Math.max(score, AlphaBetaCaptures(n, alpha, beta, !m));
+            alpha = Math.max(alpha, score);
+            if (score >= beta) {
+                break;
+            }
+        }
+        return score;
+    }
     for (let i = board1.moves.length - 1; i >= 0; i--) {
         const n = structuredClone(board1);
         setMove(n, board1.moves[order.indexOf(Math.max(...order))]);
-        if (r) var j = order.indexOf(Math.max(...order));
         order[order.indexOf(Math.max(...order))] = -Infinity;
-        score = Math.min(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
-        if (r) if (Math.min(beta, score) < beta) winDex = j;
+        score = Math.min(score, AlphaBetaCaptures(n, alpha, beta, !m));
         beta = Math.min(beta, score);
         if (score <= alpha) {
             break;
         }
     }
-    if (r) return board1.moves[winDex];
     return score;
 }
 
@@ -108,11 +266,22 @@ function evalMaterials (board1) {
     if (state == "StaleMate" || state == "Fifty") {
         return 0;
     }
+    const endGameWeight = getWeight(board1.square);
     let val = 0;
     for (let i = 0; i < 64; i++) {
         val += piece.valuesWhite[board1.square[i]];
+        if (board1.square[i]) {
+            val += piece.valuesPosition[board1.square[i]][i] * endGameWeight;
+        }
     }
     return val;
+}
+function getWeight (b) {
+    let val = 0;
+    for (let i = b.length - 1; i >= 0; i--) {
+        val += Math.abs(piece.valuesWhite[b[i]]);
+    }
+    return val / 8500;
 }
 
 function checkGameState (board1) {
