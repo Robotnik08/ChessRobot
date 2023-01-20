@@ -148,6 +148,9 @@ class Board {
         this.square = [];
         this.whiteToMove = true;
         this.isHuman = {white: w, black:b};
+        //hash
+        //this.hashHistory = [];
+        this.lastCapture = 0;
 
         this.castleQ = false;
         this.castleq = false;
@@ -174,6 +177,7 @@ class Board {
 function setMove (board1, move) {
     let capture = board1.square[move.target] > 0;
     let starttype = board1.square[move.start];
+    board1.lastCapture = board1.square[move.target];
     board1.square[move.target] = board1.square[move.start];
     board1.square[move.start] = 0;
     if (!move.start || !move.target) {
@@ -298,9 +302,34 @@ class PawnLeap {
         this.leap = true;
     }
 }
-
-
-
+// const table = initZobrist();
+// function initZobrist () {
+//     const table = {board:[[]], blackToMove:""};
+//     for (let i = 0; i < 64; i++) {
+//         for (let j = 0; j < 12; j++) {
+//             table[i][j] = random_bitstring();
+//         }
+//     }
+//     table.blackToMove = random_bitstring();
+//     table.blackToMove = random_bitstring();
+//     return table;
+// }
+// function hashZobrist (board1) {
+//     let hash = 0;
+//     for (let i = 0; i < 64; i++) {
+//         if (board1[i] > 0) {
+//             hash ^= parseInt(table[i][board1[i]]);
+//         }
+//     }
+//     return hash;
+// }
+// function random_bitstring () {
+//     let b = "0b";
+//     for (let k = 0; k < 30; k++) {
+//         b += Math.Round(Math.random());
+//     }
+//     return b;
+// }
 function setupBoard (FEN, board1) {
     let pieceID = new Piece();
     for (let i = 0; i < 64; i++) {

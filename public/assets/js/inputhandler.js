@@ -44,9 +44,8 @@ function clickup () {
 }
 function botMove(board1) {
     const w = new Worker('assets/js/calBestMove.js');
-    w.postMessage(board1);
+    w.postMessage(/*{board: */board1/*, table: table}*/);
     w.onmessage = (e) => {
-        console.log(parseObjToClass(e.data).constructor.name);
         moveWithSound(parseObjToClass(e.data), board1);
         w.terminate();
         return true;

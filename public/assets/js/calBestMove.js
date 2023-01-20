@@ -173,19 +173,22 @@ const preKing = preComputedKingData();
 const piece = new Piece();
 const endgameStrength = 0.5;
 const depth = 6;
+const immediateMateScore = 100000;
+//let table;
 onmessage = (e) => {
     // Evaluate(e.data, ((1+(1*endgameStrength-getWeight(e.data.square)*endgameStrength))*depth) | 0);
-    Evaluate(e.data, depth);
+    Evaluate(e.data/*.board*/, depth);
+    //table = e.data.table;
 };
 function Evaluate (board1, depth) {
     board1.isHuman = {white: false, black: false};
     for (let i = board1.moves.length - 1; i >= 0; i--) {
         board1.moves[i] = parseObjToClass(board1.moves[i]);
     }
-    postMessage(AlphaBeta(board1, depth, -Infinity, +Infinity, board1.whiteToMove, true));
+    postMessage(AlphaBeta(board1, 0, depth, -Infinity, +Infinity, board1.whiteToMove, true, board1.whiteToMove));
 }
-function AlphaBeta (board1, depth, alpha, beta, m, r) {
-    if (!board1.moves.length) return evaluatePosition(board1);
+function AlphaBeta (board1, fromRoot, depth, alpha, beta, m, r, o) {
+    if (!board1.moves.length) return getNoMovesResult(board1, fromRoot);
     if (!(depth - 1)) {
         return evaluatePosition(board1);
     } else {
@@ -197,11 +200,11 @@ function AlphaBeta (board1, depth, alpha, beta, m, r) {
             for (let i = board1.moves.length - 1; i >= 0; i--) {
                 const n = structuredClone(board1);
                 let move2 = board1.moves[order.indexOf(Math.min(...order))];
-                if (move2.castle != null) move2 = parseObjToClass(move2);
+                if (move2.promote != null) move2 = parseObjToClass(move2);
                 setMove(n, move2);
                 if (r) var j = order.indexOf(Math.min(...order));
                 order[order.indexOf(Math.min(...order))] = Infinity;
-                score = Math.max(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
+                score = Math.max(score, AlphaBeta(n, fromRoot + 1, depth - 1, alpha, beta, !m, false, o));
                 if (r) if (Math.max(alpha, score) > alpha) winDex = j;
                 alpha = Math.max(alpha, score);
                 if (score >= beta) {
@@ -214,11 +217,11 @@ function AlphaBeta (board1, depth, alpha, beta, m, r) {
         for (let i = board1.moves.length - 1; i >= 0; i--) {
             const n = structuredClone(board1);
             let move2 = board1.moves[order.indexOf(Math.max(...order))];
-            if (m.castle != null) move2 = parseObjToClass(move2);
+            if (m.promote != null) move2 = parseObjToClass(move2);
             setMove(n, move2);
             if (r) var j = order.indexOf(Math.max(...order));
             order[order.indexOf(Math.max(...order))] = -Infinity;
-            score = Math.min(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
+            score = Math.min(score, AlphaBeta(n, fromRoot + 1, depth - 1, alpha, beta, !m, false, o));
             if (r) if (Math.min(beta, score) < beta) winDex = j;
             beta = Math.min(beta, score);
             if (score <= alpha) {
@@ -229,7 +232,12 @@ function AlphaBeta (board1, depth, alpha, beta, m, r) {
         return score;
     }
 }
-
+function getNoMovesResult(board1, plyFromRoot) {
+    if (checkGameState(board1) == "CheckMate") {
+        return -(immediateMateScore - plyFromRoot);
+    }
+    return 0;
+}
 function evaluatePosition (board1) {
     return evalMaterials(board1);
 }
@@ -251,8 +259,8 @@ function evalMaterials (board1) {
             val += piece.valuesPosition[board1.square[i]][i] * endGameWeight * (pieceIsColour(board1.square[i], true) ? 1 : -1);
         }
     }
-    val += (5 - Math.min(...numToEdge[getKingDex(board1, true)])) * 20 * (board1.whiteToMove ? 1 - endGameWeightSplit.black :  1 - endGameWeightSplit.white);
-    val += (Math.min(...numToEdge[getKingDex(board1)])) * 20 * (board1.whiteToMove ? 1 - endGameWeightSplit.white :  1 - endGameWeightSplit.black);
+    val += Math.min(...numToEdge[getKingDex(board1, true)]) * 10 * (board1.whiteToMove ? (1 - endGameWeightSplit.black) * -1 :  1 - endGameWeightSplit.white);
+    val += Math.min(...numToEdge[getKingDex(board1)]) * 8 * (board1.whiteToMove ? 1 - endGameWeightSplit.white :  (1 - endGameWeightSplit.black) * -1);
     return val;
 }
 function getWeight (b) {
@@ -275,8 +283,21 @@ function getWeightSplit (b) {
 }
 
 function checkGameState (board1) {
-    return !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
+    const state = !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
+    if (state == "Fifty") {
+        board1.moves = [];
+    }
+    return state;
 }
+// function hashZobrist (board1) {
+//     let hash = 0;
+//     for (let i = 0; i < 64; i++) {
+//         if (board1[i] > 0) {
+//             hash ^= parseInt(table[i][board1[i]]);
+//         }
+//     }
+//     return hash;
+// }
 
 function setMove (board1, move) {
     let capture = board1.square[move.target] > 0;

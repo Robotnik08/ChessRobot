@@ -455,7 +455,11 @@ function getKingDex (board1, isOther = false) {
     return 0;
 }
 function checkGameState (board1) {
-    return !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
+    const state = !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
+    if (state == "Fifty") {
+        board1.moves = [];
+    }
+    return state;
 }
 function logArray (s) {
     str = "[";
