@@ -9,6 +9,10 @@
         <h1 id="gameState">You versus the Slome Chess Robot</h1>
         <button id="smaller" onclick="changeSize(-0.1)">-</button>Change Game Window Size<button id="larger" onclick="changeSize(0.1)">+</button>
         <canvas id="main" width="720" height="720" onmousemove="getMouse(event)" onmouseup="clickup()" onmousedown="clickdown(); getMouse(event)"></canvas>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var io = io();
+        </script>
         <script src="assets/js/classes.js"></script>
         <script src="assets/js/inputhandler.js"></script>
         <script src="assets/js/setup.js"></script>

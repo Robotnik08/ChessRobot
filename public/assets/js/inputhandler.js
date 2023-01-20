@@ -1,3 +1,4 @@
+
 //inputhandler
 let sel = false;
 function getMouse (ev) {
@@ -68,6 +69,7 @@ function moveWithSound (move, board1) {
     lastMoveEnd = move.target;
     const state = checkGameState(board1);
     if (state != "Play") {
+        io.emit('sendState', {board: board1.square, turn: board1.whiteToMove ? "White" : "Black"});
         if (state == "CheckMate") {
             document.getElementById("gameState").innerHTML = `CheckMate! ${(board1.whiteToMove ? "Black" : "White")} wins!!`;
             return;
