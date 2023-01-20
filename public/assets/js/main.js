@@ -445,9 +445,9 @@ function preComputedKingData () {
     }
     return valid;
 }
-function getKingDex (board1) {
+function getKingDex (board1, isOther = false) {
     for (let i = 0; i < 64; i++) {
-        if (!(board1.square[i] ^ ((board1.whiteToMove ? piece.white : piece.black) | piece.king))) {
+        if (!(board1.square[i] ^ ((board1.whiteToMove ? isOther ? piece.black : piece.white : isOther ? piece.white : piece.black) | piece.king))) {
             return i;
         }
     }

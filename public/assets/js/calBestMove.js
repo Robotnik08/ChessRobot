@@ -243,6 +243,7 @@ function evalMaterials (board1) {
         return 0;
     }
     const endGameWeight = getWeight(board1.square);
+    const endGameWeightSplit = getWeightSplit(board1.square);
     let val = 0;
     for (let i = 0; i < 64; i++) {
         val += piece.valuesWhite[board1.square[i]];
@@ -250,6 +251,8 @@ function evalMaterials (board1) {
             val += piece.valuesPosition[board1.square[i]][i] * endGameWeight * (pieceIsColour(board1.square[i], true) ? 1 : -1);
         }
     }
+    val += (5 - Math.min(...numToEdge[getKingDex(board1, true)])) * 20 * (board1.whiteToMove ? 1 - endGameWeightSplit.black :  1 - endGameWeightSplit.white);
+    val += (Math.min(...numToEdge[getKingDex(board1)])) * 20 * (board1.whiteToMove ? 1 - endGameWeightSplit.white :  1 - endGameWeightSplit.black);
     return val;
 }
 function getWeight (b) {
@@ -258,6 +261,17 @@ function getWeight (b) {
         val += Math.abs(piece.valuesWhite[b[i]]);
     }
     return val / 8500;
+}
+function getWeightSplit (b) {
+    let val = {white: 0, black: 0};
+    for (let i = b.length - 1; i >= 0; i--) {
+        if (piece.valuesWhite[b[i]]) {
+            val.white += Math.abs(piece.valuesWhite[b[i]]);
+        } else {
+            val.black += Math.abs(piece.valuesWhite[b[i]]);
+        }
+    }
+    return {white: val.white / 4750, black: val.white / 4750};
 }
 
 function checkGameState (board1) {
@@ -794,9 +808,9 @@ function preComputedKingData () {
     }
     return valid;
 }
-function getKingDex (board1) {
+function getKingDex (board1, isOther = false) {
     for (let i = 0; i < 64; i++) {
-        if (!(board1.square[i] ^ ((board1.whiteToMove ? piece.white : piece.black) | piece.king))) {
+        if (!(board1.square[i] ^ ((board1.whiteToMove ? isOther ? piece.black : piece.white : isOther ? piece.white : piece.black) | piece.king))) {
             return i;
         }
     }

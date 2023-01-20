@@ -35,10 +35,10 @@ const lightSquare = '#ffe6cc';
 const darkSquare = '#804200';
 let lastMoveStart = null;
 let lastMoveEnd = null;
-let windowAmplifiedSize = 1;
-
+let windowAmplifiedSize = 0.9;
+changeSize (0);
 function changeSize (i) {
-    if (windowAmplifiedSize + i < 0.4 || windowAmplifiedSize + i > 1.6) return;
+    if (windowAmplifiedSize + i < 0.3 || windowAmplifiedSize + i > 1.7) return;
     windowAmplifiedSize += i;
     can.width = 720 * windowAmplifiedSize;
     can.height = 720 * windowAmplifiedSize;
