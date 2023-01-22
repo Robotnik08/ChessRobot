@@ -11,6 +11,7 @@ const player = Math.round(Math.random());
 const board = new Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', player, !player);
 const mouse = {x:0,y:0};
 // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+// 5k2/p6p/6r1/7K/1p6/1B6/P7/8 w - - 0 1
 
 
 

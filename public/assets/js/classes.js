@@ -155,10 +155,10 @@ class Board {
         this.gameLength = 0;
         this.targets = [];
 
-        this.castleQ = -1;
-        this.castleq = -1;
-        this.castleK = -1;
-        this.castlek = -1;
+        this.castleQ = -100;
+        this.castleq = -100;
+        this.castleK = -100;
+        this.castlek = -100;
 
         this.enPas = null;
         this.enPasLog = [];
@@ -189,19 +189,19 @@ function setMove (board1, move) {
     board1.square[move.target] = board1.square[move.start];
     board1.square[move.start] = 0;
     if (!move.start || !move.target) {
-        board1.castleQ = board1.gameLength;
+        if (!board1.castleQ) board1.castleQ = board1.gameLength;
     } else if (!(move.start ^ 7) || !(move.target ^ 7)) {
-        board1.castleK = board1.gameLength;
+        if (!board1.castleK) board1.castleK = board1.gameLength;
     } else if (!(move.start ^ 55) || !(move.target ^ 55)) {
-        board1.castleq = board1.gameLength;
+        if (!board1.castleq) board1.castleq = board1.gameLength;
     } else if (!(move.start ^ 63) || !(move.target ^ 63)) {
-        board1.castlek = board1.gameLength;
+        if (!board1.castlek) board1.castlek = board1.gameLength;
     } else if (!(move.start ^ 4)) {
-        board1.castleK = board1.gameLength;
-        board1.castleQ = board1.gameLength;
+        if (!board1.castleK) board1.castleK = board1.gameLength;
+        if (!board1.castleQ) board1.castleQ = board1.gameLength;
     } else if (!(move.start ^ 60)) {
-        board1.castlek = board1.gameLength;
-        board1.castleq = board1.gameLength;
+        if (!board1.castlek) board1.castlek = board1.gameLength;
+        if (!board1.castleq) board1.castleq = board1.gameLength;
     }
     
     if (move.constructor.name == 'MoveSpecial') {
@@ -273,7 +273,7 @@ function setMove (board1, move) {
             board1.enPas = move.target + 8;
         }
     } else {
-        board1.enPas = null;
+        board1.enPas = -999;
     }
     board1.enPasLog.push(board1.enPas);
     board1.selectedTile = null;
