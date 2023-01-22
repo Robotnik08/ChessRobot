@@ -7,7 +7,8 @@ const numToEdge = preComputedSlidingData();
 const preKnight = preComputedKnightData();
 const preKing = preComputedKingData();
 const piece = new Piece();
-const board = new Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', true, false);
+const player = Math.round(Math.random());
+const board = new Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', player, !player);
 const mouse = {x:0,y:0};
 // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 
@@ -25,30 +26,30 @@ function checkLegal (board1) {
             if (isSliding(t)) {
                 genSliding(board1, start, t);
             }
-            if (t == (piece.white | piece.pawn) || t == (piece.black | piece.pawn)) {
+            if (!(t ^ (piece.white | piece.pawn)) || !(t ^ (piece.black | piece.pawn))) {
                 genPawn(board1, start, t);
             }
-            if (t == (piece.white | piece.knight) || t == (piece.black | piece.knight)) {
+            if (!(t ^ (piece.white | piece.knight)) || !(t ^ (piece.black | piece.knight))) {
                 genKnight(board1, start);
             }
-            if (t == (piece.white | piece.king) || t == (piece.black | piece.king)) {
+            if (!(t ^ (piece.white | piece.king)) || !(t ^ (piece.black | piece.king))) {
                 genKing(board1, start);
             }
         }
     }
     if (board1.whiteToMove) {
-        if (board1.castleQ && board1.square[1] == 0 && board1.square[2] == 0 && board1.square[3] == 0 && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 3) && !checkIfAttacked(board1, 2)) {
-            board1.moves.push(new MoveSpecial(4, 2, -1, false));
+        if (!board1.castleQ && !board1.square[1] && !board1.square[2] && !board1.square[3] && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 3) && !checkIfAttacked(board1, 2)) {
+            board1.moves.push(new MoveSpecial(4, 2, -1, false, 0));
         }
-        if (board1.castleK && board1.square[5] == 0 && board1.square[6] == 0 && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 5) && !checkIfAttacked(board1, 6)) {
-            board1.moves.push(new MoveSpecial(4, 6, 1, false));
+        if (!board1.castleK && !board1.square[5] && !board1.square[6] && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 5) && !checkIfAttacked(board1, 6)) {
+            board1.moves.push(new MoveSpecial(4, 6, 1, false, 0));
         }
     } else {
-        if (board1.castleq && board1.square[57] == 0 && board1.square[58] == 0 && board1.square[59] == 0 && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 59) && !checkIfAttacked(board1, 58)) {
-            board1.moves.push(new MoveSpecial(60, 58, -1, false));
+        if (!board1.castleq && !board1.square[57] && !board1.square[58] && !board1.square[59] && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 59) && !checkIfAttacked(board1, 58)) {
+            board1.moves.push(new MoveSpecial(60, 58, -1, false, 0));
         }
-        if (board1.castlek && board1.square[61] == 0 && board1.square[62] == 0 && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 61) && !checkIfAttacked(board1, 62)) {
-            board1.moves.push(new MoveSpecial(60, 62, 1, false));
+        if (!board1.castlek && !board1.square[61] && !board1.square[62] && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 61) && !checkIfAttacked(board1, 62)) {
+            board1.moves.push(new MoveSpecial(60, 62, 1, false, 0));
         }
     }
     filterLegal(board1);
@@ -159,10 +160,10 @@ function genPawn (board1, i, type) {
     }
     if (board1.square[i + offset] == piece.none) {
         if (i + offset * 2 > 63 || i + offset * 2 < 0) {
-            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.bishop));
-            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.knight));
-            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.rook));
-            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.queen));
+            board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.bishop));
+            board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.knight));
+            board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.rook));
+            board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.queen));
         } else {
             board1.moves.push(new Move(i, i + offset));
         }
@@ -172,20 +173,20 @@ function genPawn (board1, i, type) {
     }
     if (pieceIsColour(board1.square[i + offset + 1], !board1.whiteToMove) && toSide < 1) {
         if (i + 1 + offset * 2 > 63 || i + 1 + offset * 2 < 0) {
-            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.bishop));
-            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.knight));
-            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.rook));
-            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.queen));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, 0, false, piece.bishop));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, 0, false, piece.knight));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, 0, false, piece.rook));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, 0, false, piece.queen));
         } else {
             board1.moves.push(new Move(i, i + 1 + offset));
         }
     }
     if (pieceIsColour(board1.square[i + offset - 1], !board1.whiteToMove) && toSide > -1) {
         if (i - 1 + offset * 2 > 63 || i - 1 + offset * 2 < 0) {
-            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.bishop));
-            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.knight));
-            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.rook));
-            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.queen));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, 0, false, piece.bishop));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, 0, false, piece.knight));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, 0, false, piece.rook));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, 0, false, piece.queen));
         } else {
             board1.moves.push(new Move(i, i - 1 + offset));
         }
@@ -444,9 +445,9 @@ function preComputedKingData () {
     }
     return valid;
 }
-function getKingDex (board1) {
+function getKingDex (board1, isOther = false) {
     for (let i = 0; i < 64; i++) {
-        if (!(board1.square[i] ^ ((board1.whiteToMove ? piece.white : piece.black) | piece.king))) {
+        if (!(board1.square[i] ^ ((board1.whiteToMove ? isOther ? piece.black : piece.white : isOther ? piece.white : piece.black) | piece.king))) {
             return i;
         }
     }
@@ -454,7 +455,11 @@ function getKingDex (board1) {
     return 0;
 }
 function checkGameState (board1) {
-    return !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
+    const state = !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
+    if (state == "Fifty") {
+        board1.moves = [];
+    }
+    return state;
 }
 function logArray (s) {
     str = "[";

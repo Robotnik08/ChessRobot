@@ -1,8 +1,22 @@
-body {
-    height: 90%;
-    width: 90%;
+@import url('https://fonts.cdnfonts.com/css/noto-sans-grantha');
+
+html, body {
+    height: 100%;
+    width: 100%;
     margin: 0;
     overflow-x: hidden;
+    font-family: 'Noto Sans Grantha', sans-serif;
+    text-align: center;
+    font-size: 2vh;
+    color:white;
+    background-color: #483a2d;
+}
+* {
+    font-weight: 600;
+}
+@font-face {
+    font-family: slome;
+    src: url("slome_3_hex.ttf");
 }
 #main {
     /* height: 95%;
@@ -16,6 +30,49 @@ body {
     image-rendering: crisp-edges;
     border: 25px black solid;
 }
-#gameState {
-    text-align: center;
+button {
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    font-size: 2vh;
+    margin: 0 10px;
 }
+
+h1 {
+    font-family: slome;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-size: larger;
+    font-weight: 650;
+    background-color: #5865F2;
+    padding: 10px 40px;
+    border-radius: 10px;
+    transition: background-color 250ms, letter-spacing 250ms;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    margin: 0 auto;
+}
+a svg{
+    margin-top: 2px;
+    margin-right: 8px;
+    width: 2vw;
+    transition: transform 250ms, margin-right 250ms;
+}
+
+a:hover {
+    opacity: .8;
+    letter-spacing: .5px;
+}
+
+a:hover svg{
+    transform: rotate(-15deg) scale(1.15);
+    margin-right: 12px;
+}
+
+

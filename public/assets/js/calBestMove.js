@@ -14,7 +14,132 @@ class Piece {
         this.directions = [8, -8, -1, 1, 7, -7, 9, -9];
         this.kingDir = [8, 9, 1, -7, -8, -9, -1, 7];
         this.knightDir = [15, 17, 10, -6, -15, -17, -10, 6];
-        this.valuesWhite = [0, null, null, null, null, null, null, null, null, -10000, -1000, -525, -350, -350, -100, null, null, 10000, 1000, 525, 350, 350, 100];
+        this.valuesWhite = [0, null, null, null, null, null, null, null, null, 0, -1000, -525, -350, -350, -100, null, null, 0, 1000, 525, 350, 350, 100];
+
+        this.valuesPosition = [null, null, null, null, null, null, null, null, null, 
+            [
+                //Black King
+                0.5, 0.5, 0.5, 0  , 0  , 0.5, 0.5, 0.5, //line 1
+                0.5, 0.5, 0.5, 0  , 0  , 0.5, 0.5, 0.5, //line 2
+                1  , 0.5, 0.5, 0  , 0  , 0.5, 0.5, 1  , //line 3
+                1  , 0.5, 0.5, 0  , 0  , 0.5, 0.5, 1  , //line 4
+                2  , 1  , 1  , 0.5, 0.5, 1  , 1  , 2  , //line 5
+                3  , 2  , 2  , 2  , 2  , 2  , 2  , 3  , //line 6
+                5  , 5  , 3  , 3  , 3  , 3  , 5  , 5  , //line 7
+                7  , 11 , 4  , 3.5, 3.5, 4  , 11 , 7    //line 8
+            ], [
+                //Black Queen
+                0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5, //line 1
+                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
+                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
+                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
+                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
+                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
+                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
+                0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5  //line 8
+            ], [
+                //Black Rook
+                4  , 4  , 4  , 4  , 4  , 4  , 4  , 4  , //line 1
+                5.5, 9  , 9  , 9  , 9  , 9  , 9  , 5.5, //line 2
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 3
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 4
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 5
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 6
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 7
+                3  , 3.5, 4  , 6.5, 6.5, 4  , 3.5, 3    //line 8
+            ], [
+                //Black Bishop
+                0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5, //line 1
+                2  , 4  , 4  , 4  , 4  , 4  , 4  , 2  , //line 2
+                2  , 4  , 5  , 6  , 6  , 5  , 4  , 2  , //line 3
+                2  , 5  , 5  , 6  , 6  , 5  , 5  , 2  , //line 4
+                2  , 4  , 8  , 6  , 6  , 8  , 4  , 2  , //line 5
+                2  , 6  , 6  , 6  , 6  , 6  , 6  , 2  , //line 6
+                2  , 6  , 4  , 4  , 4  , 4  , 6  , 2  , //line 7
+                0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5  //line 8
+            ], [
+                //Black Knight
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5, //line 1
+                1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 2
+                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
+                3  , 6  , 7  , 12 , 12 , 7  , 6  , 3  , //line 4
+                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
+                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
+                1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
+                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5  //line 8
+            ], [
+                //Black Pawn
+                1  , 1  , 1  , 1  , 1  , 1  , 1  , 1  , //line 1
+                10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
+                3  , 3  , 5  , 6  , 6  , 5  , 3  , 3  , //line 3
+                3  , 3  , 6  , 9  , 9  , 6  , 3  , 3  , //line 4
+                2.5, 2.5, 2.5, 15 , 15 , 2.5, 2.5, 2.5, //line 5
+                3  , 1.5, 5  , 3  , 3  , 5  , 1.5, 3  , //line 6
+                3  , 4  , 4  , 0  , 0  , 4  , 4  , 3  , //line 7
+                0  , 0  , 0  , 0  , 0  , 0  , 0  , 0    //line 8
+            ], null, null,
+            [
+                //White King
+                7  , 11 , 4  , 3.5, 3.5, 4  , 11 , 7  , //line 8
+                5  , 5  , 3  , 3  , 3  , 3  , 5  , 5  , //line 7
+                3  , 2  , 2  , 2  , 2  , 2  , 2  , 3  , //line 6
+                2  , 1  , 1  , 0.5, 0.5, 1  , 1  , 2  , //line 5
+                1  , 0.5, 0.5, 0  , 0  , 0.5, 0.5, 1  , //line 4
+                1  , 0.5, 0.5, 0  , 0  , 0.5, 0.5, 1  , //line 3
+                0.5, 0.5, 0.5, 0  , 0  , 0.5, 0.5, 0.5, //line 2
+                0.5, 0.5, 0.5, 0  , 0  , 0.5, 0.5, 0.5  //line 1
+            ], [
+                //White Queen
+                0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5, //line 8
+                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
+                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
+                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
+                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
+                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
+                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
+                0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5  //line 1
+            ], [
+                //White Rook
+                3  , 3.5, 4  , 6.5, 6.5, 4  , 3.5, 3  , //line 8
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 7
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 6
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 5
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 4
+                0.5, 3  , 3  , 3  , 3  , 3  , 3  , 0.5, //line 3
+                5.5, 9  , 9  , 9  , 9  , 9  , 9  , 5.5, //line 2
+                4  , 4  , 4  , 4  , 4  , 4  , 4  , 4    //line 1
+            ], [
+                //White Bishop
+                0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5, //line 8
+                2  , 6  , 4  , 4  , 4  , 4  , 6  , 2  , //line 7
+                2  , 6  , 6  , 6  , 6  , 6  , 6  , 2  , //line 6
+                2  , 4  , 8  , 6  , 6  , 8  , 4  , 2  , //line 5
+                2  , 5  , 5  , 6  , 6  , 5  , 5  , 2  , //line 4
+                2  , 4  , 5  , 6  , 6  , 5  , 4  , 2  , //line 3
+                2  , 4  , 4  , 4  , 4  , 4  , 4  , 2  , //line 2
+                0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5  //line 1
+            ], [
+                //White Knight
+                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5, //line 8
+                1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
+                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
+                3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
+                3  , 6  , 7  , 12 , 12 , 7  , 6  , 3  , //line 4
+                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
+                1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 2
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5  //line 1
+            ], [
+                //White Pawn
+                0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , //line 8
+                3  , 4  , 4  , 0  , 0  , 4  , 4  , 3  , //line 7
+                3  , 1.5, 1  , 3  , 3  , 1  , 1.5, 3  , //line 6
+                2.5, 2.5, 2.5, 14 , 14 , 2.5, 2.5, 2.5, //line 5
+                3  , 3  , 3.5, 6  , 6  , 3.5, 3  , 3  , //line 4
+                3  , 3  , 4  , 6  , 6  , 4  , 3  , 3  , //line 3
+                10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
+                1  , 1  , 1  , 1  , 1  , 1  , 1  , 1    //line 1
+            ]
+        ]
     }
 }
 class Move {
@@ -46,56 +171,69 @@ const numToEdge = preComputedSlidingData();
 const preKnight = preComputedKnightData();
 const preKing = preComputedKingData();
 const piece = new Piece();
+const endgameStrength = 0.5;
+const depth = 6;
+const immediateMateScore = 1000000;
 onmessage = (e) => {
-    Evaluate(e.data, 6);
+    e.data.moveHistory = [];
+    Evaluate(e.data, depth);
 };
 function Evaluate (board1, depth) {
-    const settings = structuredClone(board1.isHuman);
     board1.isHuman = {white: false, black: false};
     for (let i = board1.moves.length - 1; i >= 0; i--) {
         board1.moves[i] = parseObjToClass(board1.moves[i]);
     }
-    postMessage(AlphaBeta(board1, depth, -Infinity, +Infinity, board1.whiteToMove, true));
-    board1.isHuman = settings;
+    postMessage(AlphaBeta(board1, 0, depth, -Infinity, +Infinity, board1.whiteToMove, true, board1.whiteToMove));
 }
-function AlphaBeta (board1, depth, alpha, beta, m, r) {
-    if (!(depth - 1) || !board1.moves.length) return evaluatePosition(board1);
-    let score = Infinity;
-    if (r) var winDex = 0;
-    const order = orderMoves(board1);
-    if (m) {
-        score = -Infinity;
+function AlphaBeta (board1, fromRoot, depth, alpha, beta, m, r, o) {
+    if (!board1.moves.length) return getNoMovesResult(board1, fromRoot);
+    if (!(depth - 1)) {
+        return evaluatePosition(board1);
+    } else {
+        let score = Infinity;
+        if (r) var winDex = 0;
+        const order = orderMoves(board1);
+        if (m) {
+            score = -Infinity;
+            for (let i = board1.moves.length - 1; i >= 0; i--) {
+                const move2 = board1.moves[order.indexOf(Math.min(...order))];
+                setMove(board1, move2);
+                if (r) var j = order.indexOf(Math.min(...order));
+                order[order.indexOf(Math.min(...order))] = Infinity;
+                score = Math.max(score, AlphaBeta(board1, fromRoot + 1, depth - 1, alpha, beta, !m, false, o));
+                undoMove(board1, move2);
+                if (r) if (Math.max(alpha, score) > alpha) winDex = j;
+                alpha = Math.max(alpha, score);
+                if (score >= beta) {
+                    break;
+                }
+            }
+            if (r) return board1.moves[winDex];
+            return score;
+        }
         for (let i = board1.moves.length - 1; i >= 0; i--) {
-            const n = structuredClone(board1);
-            setMove(n, board1.moves[order.indexOf(Math.min(...order))]);
-            if (r) var j = order.indexOf(Math.min(...order));
-            order[order.indexOf(Math.min(...order))] = Infinity;
-            score = Math.max(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
-            if (r) if (Math.max(alpha, score) > alpha) winDex = j;
-            alpha = Math.max(alpha, score);
-            if (score >= beta) {
+            const move2 = board1.moves[order.indexOf(Math.max(...order))];
+            setMove(board1, move2);
+            if (r) var j = order.indexOf(Math.max(...order));
+            order[order.indexOf(Math.max(...order))] = -Infinity;
+            score = Math.min(score, AlphaBeta(board1, fromRoot + 1, depth - 1, alpha, beta, !m, false, o));
+            undoMove(board1, move2);
+            if (r) if (Math.min(beta, score) < beta) winDex = j;
+            beta = Math.min(beta, score);
+            if (score <= alpha) {
                 break;
             }
         }
         if (r) return board1.moves[winDex];
         return score;
     }
-    for (let i = board1.moves.length - 1; i >= 0; i--) {
-        const n = structuredClone(board1);
-        setMove(n, board1.moves[order.indexOf(Math.max(...order))]);
-        if (r) var j = order.indexOf(Math.max(...order));
-        order[order.indexOf(Math.max(...order))] = -Infinity;
-        score = Math.min(score, AlphaBeta(n, depth - 1, alpha, beta, !m, false));
-        if (r) if (Math.min(beta, score) < beta) winDex = j;
-        beta = Math.min(beta, score);
-        if (score <= alpha) {
-            break;
-        }
-    }
-    if (r) return board1.moves[winDex];
-    return score;
 }
-
+function getNoMovesResult(board1, plyFromRoot) {
+    if (checkGameState(board1) == "CheckMate") {
+        return (immediateMateScore - plyFromRoot*100)*(board1.whiteToMove ? -1 : 1);
+    }
+    return 0;
+}
 function evaluatePosition (board1) {
     return evalMaterials(board1);
 }
@@ -108,36 +246,68 @@ function evalMaterials (board1) {
     if (state == "StaleMate" || state == "Fifty") {
         return 0;
     }
+    const endGameWeight = getWeight(board1.square);
+    const endGameWeightSplit = getWeightSplit(board1.square);
     let val = 0;
     for (let i = 0; i < 64; i++) {
         val += piece.valuesWhite[board1.square[i]];
+        if (board1.square[i]) {
+            val += piece.valuesPosition[board1.square[i]][i] * endGameWeight * (pieceIsColour(board1.square[i], true) ? 1 : -1);
+        }
     }
+    val += Math.min(...numToEdge[getKingDex(board1, true)]) * 10 * (board1.whiteToMove ? (1 - endGameWeightSplit.black) * -1 :  1 - endGameWeightSplit.white);
+    val += Math.min(...numToEdge[getKingDex(board1)]) * 8 * (board1.whiteToMove ? 1 - endGameWeightSplit.white :  (1 - endGameWeightSplit.black) * -1);
+    val += Math.min(...numToEdge[getKingDex(board1)]) * 8 * (board1.whiteToMove ? 1 - endGameWeightSplit.white :  (1 - endGameWeightSplit.black) * -1);
     return val;
+}
+function getWeight (b) {
+    let val = 0;
+    for (let i = b.length - 1; i >= 0; i--) {
+        val += Math.abs(piece.valuesWhite[b[i]]);
+    }
+    return val / 8500;
+}
+function getWeightSplit (b) {
+    let val = {white: 0, black: 0};
+    for (let i = b.length - 1; i >= 0; i--) {
+        if (piece.valuesWhite[b[i]]) {
+            val.white += Math.abs(piece.valuesWhite[b[i]]);
+        } else {
+            val.black += Math.abs(piece.valuesWhite[b[i]]);
+        }
+    }
+    return {white: val.white / 4750, black: val.white / 4750};
 }
 
 function checkGameState (board1) {
-    return !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
+    const state = !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
+    if (state == "Fifty") {
+        board1.moves = [];
+    }
+    return state;
 }
 
 function setMove (board1, move) {
+    board1.gameLength++;
+    board1.targets.push(board1.square[move.target]);
     let capture = board1.square[move.target] > 0;
     let starttype = board1.square[move.start];
     board1.square[move.target] = board1.square[move.start];
     board1.square[move.start] = 0;
-    if (move.start == 0 || move.target == 0 ) {
-        board1.castleQ = false;
-    } else if (move.start == 7 || move.target == 7) {
-        board1.castleK = false;
-    } else if (move.start == 55 || move.target == 55) {
-        board1.castleq = false;
-    } else if (move.start == 63 || move.target == 63) {
-        board1.castlek = false;
-    } else if (move.start == 4) {
-        board1.castleK = false;
-        board1.castleQ = false;
-    } else if (move.start == 60) {
-        board1.castlek = false;
-        board1.castleq = false;
+    if (!move.start || !move.target) {
+        board1.castleQ = board1.gameLength;
+    } else if (!(move.start ^ 7) || !(move.target ^ 7)) {
+        board1.castleK = board1.gameLength;
+    } else if (!(move.start ^ 55) || !(move.target ^ 55)) {
+        board1.castleq = board1.gameLength;
+    } else if (!(move.start ^ 63) || !(move.target ^ 63)) {
+        board1.castlek = board1.gameLength;
+    } else if (!(move.start ^ 4)) {
+        board1.castleK = board1.gameLength;
+        board1.castleQ = board1.gameLength;
+    } else if (!(move.start ^ 60)) {
+        board1.castlek = board1.gameLength;
+        board1.castleq = board1.gameLength;
     }
     
     if (move.constructor.name == 'MoveSpecial') {
@@ -209,18 +379,68 @@ function setMove (board1, move) {
             board1.enPas = move.target + 8;
         }
     } else {
-        board1.enPas = null;
+        board1.enPas = -1;
     }
+    board1.enPasLog.push(board1.enPas);
     board1.selectedTile = null;
     if (capture || starttype == (piece.white | piece.pawn) || starttype == (piece.black | piece.pawn)) {
         board1.fiftyMoveTimer = 0;
     } else {
         board1.fiftyMoveTimer++;
     } 
+    board1.fiftyMoveTimerLog.push(board1.fiftyMoveTimer);
     if (!board1.whiteToMove) board1.abortTimer++;
     board1.whiteToMove = !board1.whiteToMove;
     checkLegal(board1);
     return capture;
+}
+function undoMove (board1, move) {
+    board1.square[move.start] = board1.square[move.target];
+    board1.square[move.target] = board1.targets.pop();
+    board1.whiteToMove = !board1.whiteToMove;
+    if (!(board1.gameLength ^ board1.castleQ)) {
+        board1.castleQ = 0;
+    }
+    if (!(board1.gameLength ^ board1.castleq)) {
+        board1.castleq = 0;
+    }
+    if (!(board1.gameLength ^ board1.castleK)) {
+        board1.castleK = 0;
+    }
+    if (!(board1.gameLength ^ board1.castlek)) {
+        board1.castlek = 0;
+    }
+    if (move.constructor.name == 'MoveSpecial') {
+        if (move.castle != 0) {
+            if (move.castle > 0) {
+                board1.square[move.target + 1] = board1.square[move.target - 1];
+                board1.square[move.target - 1] = 0;
+            }
+            if (move.castle < 0) {
+                board1.square[move.target - 2] = board1.square[move.target + 1];
+                board1.square[move.target + 1] = 0;
+            }
+        } else if (move.enPas) {
+            if (board1.whiteToMove) {
+                board1.square[move.target -8] = piece.black | piece.pawn;
+            } else {
+                board1.square[move.target +8] = piece.white | piece.pawn;
+            }
+        } else if (move.promote) {
+            if (board1.whiteToMove) {
+                board1.square[move.start] = piece.white | piece.pawn;
+            } else {
+                board1.square[move.start] = piece.black | piece.pawn;
+            }
+        }
+    }
+    board1.enPasLog.pop();
+    board1.fiftyMoveTimerLog.pop();
+    board1.enPas = board1.enPasLog[board1.enPasLog.length - 1];
+    board1.selectedTile = null;
+    board1.fiftyMoveTimer = board1.fiftyMoveTimerLog[board1.fiftyMoveTimerLog.length - 1];
+    board1.gameLength--;
+    checkLegal(board1);
 }
 function checkLegal (board1) {
     board1.moves = [];
@@ -230,30 +450,30 @@ function checkLegal (board1) {
             if (isSliding(t)) {
                 genSliding(board1, start, t);
             }
-            if (t == (piece.white | piece.pawn) || t == (piece.black | piece.pawn)) {
+            if (!(t ^ (piece.white | piece.pawn)) || !(t ^ (piece.black | piece.pawn))) {
                 genPawn(board1, start, t);
             }
-            if (t == (piece.white | piece.knight) || t == (piece.black | piece.knight)) {
+            if (!(t ^ (piece.white | piece.knight)) || !(t ^ (piece.black | piece.knight))) {
                 genKnight(board1, start);
             }
-            if (t == (piece.white | piece.king) || t == (piece.black | piece.king)) {
+            if (!(t ^ (piece.white | piece.king)) || !(t ^ (piece.black | piece.king))) {
                 genKing(board1, start);
             }
         }
     }
     if (board1.whiteToMove) {
-        if (board1.castleQ && board1.square[1] == 0 && board1.square[2] == 0 && board1.square[3] == 0 && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 3) && !checkIfAttacked(board1, 2)) {
-            board1.moves.push(new MoveSpecial(4, 2, -1, false));
+        if (!board1.castleQ && !board1.square[1] && !board1.square[2] && !board1.square[3] && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 3) && !checkIfAttacked(board1, 2)) {
+            board1.moves.push(new MoveSpecial(4, 2, -1, false, 0));
         }
-        if (board1.castleK && board1.square[5] == 0 && board1.square[6] == 0 && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 5) && !checkIfAttacked(board1, 6)) {
-            board1.moves.push(new MoveSpecial(4, 6, 1, false));
+        if (!board1.castleK && !board1.square[5] && !board1.square[6] && !checkIfAttacked(board1, 4) && !checkIfAttacked(board1, 5) && !checkIfAttacked(board1, 6)) {
+            board1.moves.push(new MoveSpecial(4, 6, 1, false, 0));
         }
     } else {
-        if (board1.castleq && board1.square[57] == 0 && board1.square[58] == 0 && board1.square[59] == 0 && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 59) && !checkIfAttacked(board1, 58)) {
-            board1.moves.push(new MoveSpecial(60, 58, -1, false));
+        if (!board1.castleq && !board1.square[57] && !board1.square[58] && !board1.square[59] && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 59) && !checkIfAttacked(board1, 58)) {
+            board1.moves.push(new MoveSpecial(60, 58, -1, false, 0));
         }
-        if (board1.castlek && board1.square[61] == 0 && board1.square[62] == 0 && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 61) && !checkIfAttacked(board1, 62)) {
-            board1.moves.push(new MoveSpecial(60, 62, 1, false));
+        if (!board1.castlek && !board1.square[61] && !board1.square[62] && !checkIfAttacked(board1, 60) && !checkIfAttacked(board1, 61) && !checkIfAttacked(board1, 62)) {
+            board1.moves.push(new MoveSpecial(60, 62, 1, false, 0));
         }
     }
     filterLegal(board1);
@@ -364,10 +584,10 @@ function genPawn (board1, i, type) {
     }
     if (board1.square[i + offset] == piece.none) {
         if (i + offset * 2 > 63 || i + offset * 2 < 0) {
-            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.bishop));
-            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.knight));
-            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.rook));
-            board1.moves.push(new MoveSpecial(i, i + offset, false, false, piece.queen));
+            board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.bishop));
+            board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.knight));
+            board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.rook));
+            board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.queen));
         } else {
             board1.moves.push(new Move(i, i + offset));
         }
@@ -377,29 +597,29 @@ function genPawn (board1, i, type) {
     }
     if (pieceIsColour(board1.square[i + offset + 1], !board1.whiteToMove) && toSide < 1) {
         if (i + 1 + offset * 2 > 63 || i + 1 + offset * 2 < 0) {
-            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.bishop));
-            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.knight));
-            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.rook));
-            board1.moves.push(new MoveSpecial(i, i + 1 + offset, false, false, piece.queen));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, 0, false, piece.bishop));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, 0, false, piece.knight));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, 0, false, piece.rook));
+            board1.moves.push(new MoveSpecial(i, i + 1 + offset, 0, false, piece.queen));
         } else {
             board1.moves.push(new Move(i, i + 1 + offset));
         }
     }
     if (pieceIsColour(board1.square[i + offset - 1], !board1.whiteToMove) && toSide > -1) {
         if (i - 1 + offset * 2 > 63 || i - 1 + offset * 2 < 0) {
-            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.bishop));
-            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.knight));
-            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.rook));
-            board1.moves.push(new MoveSpecial(i, i - 1 + offset, false, false, piece.queen));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, 0, false, piece.bishop));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, 0, false, piece.knight));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, 0, false, piece.rook));
+            board1.moves.push(new MoveSpecial(i, i - 1 + offset, 0, false, piece.queen));
         } else {
             board1.moves.push(new Move(i, i - 1 + offset));
         }
     }
     //enpassantCheck
     if (board1.enPas == i + offset + 1) {
-        board1.moves.push(new MoveSpecial(i, i + offset + 1, 0, true));
+        board1.moves.push(new MoveSpecial(i, i + offset + 1, 0, true, 0));
     } else if (board1.enPas == i + offset - 1) {
-        board1.moves.push(new MoveSpecial(i, i + offset - 1, 0, true));
+        board1.moves.push(new MoveSpecial(i, i + offset - 1, 0, true, 0));
     }
 }
 function genKnight (board1, i) {
@@ -649,9 +869,9 @@ function preComputedKingData () {
     }
     return valid;
 }
-function getKingDex (board1) {
+function getKingDex (board1, isOther = false) {
     for (let i = 0; i < 64; i++) {
-        if (!(board1.square[i] ^ ((board1.whiteToMove ? piece.white : piece.black) | piece.king))) {
+        if (!(board1.square[i] ^ ((board1.whiteToMove ? isOther ? piece.black : piece.white : isOther ? piece.white : piece.black) | piece.king))) {
             return i;
         }
     }
@@ -659,5 +879,5 @@ function getKingDex (board1) {
     return 0;
 }
 function parseObjToClass (m) {
-    return m.promote != "undefined" ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
+    return m.promote != null ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
 }
