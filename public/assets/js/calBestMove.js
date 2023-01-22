@@ -257,7 +257,6 @@ function evalMaterials (board1) {
     }
     val += Math.min(...numToEdge[getKingDex(board1, true)]) * 10 * (board1.whiteToMove ? (1 - endGameWeightSplit.black) * -1 :  1 - endGameWeightSplit.white);
     val += Math.min(...numToEdge[getKingDex(board1)]) * 8 * (board1.whiteToMove ? 1 - endGameWeightSplit.white :  (1 - endGameWeightSplit.black) * -1);
-    val += Math.min(...numToEdge[getKingDex(board1)]) * 8 * (board1.whiteToMove ? 1 - endGameWeightSplit.white :  (1 - endGameWeightSplit.black) * -1);
     return val;
 }
 function getWeight (b) {
@@ -286,6 +285,15 @@ function checkGameState (board1) {
     }
     return state;
 }
+// function hashZobrist (board1) {
+//     let hash = 0;
+//     for (let i = 0; i < 64; i++) {
+//         if (board1[i] > 0) {
+//             hash ^= parseInt(table[i][board1[i]]);
+//         }
+//     }
+//     return hash;
+// }
 
 function setMove (board1, move) {
     board1.gameLength++;

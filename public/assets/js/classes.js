@@ -185,6 +185,7 @@ function setMove (board1, move) {
     board1.targets.push(board1.square[move.target]);
     let capture = board1.square[move.target] > 0;
     let starttype = board1.square[move.start];
+    board1.lastCapture = board1.square[move.target];
     board1.square[move.target] = board1.square[move.start];
     board1.square[move.start] = 0;
     if (!move.start || !move.target) {
