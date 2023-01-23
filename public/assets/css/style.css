@@ -46,6 +46,7 @@ body {
     overflow-x: auto;
     text-overflow: "-";
     white-space: nowrap;
+    font-size: 1.4vh;
 }
 #capturedPieces {
     background-color: gray;
