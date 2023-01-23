@@ -45,6 +45,7 @@ function changeSize (i) {
     can.offscreenCanvas.width = can.width;
     can.offscreenCanvas.height = can.height;
     setupCheckerBoard();
+    updateSize();
 }
 //draw
 setupCheckerBoard();
