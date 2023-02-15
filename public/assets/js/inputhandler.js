@@ -12,8 +12,9 @@ const grabPiece = ["My piece now.", "Give me that.", "Ready to give up?", "You t
     "You can't protect your pieces forever, they're mine for the taking.",
     "I'll be taking your pieces, and there's nothing you can do to stop me.",
     "Looks like your pieces are in check, and there's no escape.",
-    "Your pieces are no match for my capturing skills."
-  ];
+    "Your pieces are no match for my capturing skills.",
+    "Do you even know how to play chess?"
+];
 const grabQueen = ["My queen now.", "haha.", "Are you ready to give up yet?", "Your queen's about to fall like a pawn to a king.",
 "Looks like your queen is about to be taken, better watch out.",
 "I'm about to take that queen of yours and make her mine.",
@@ -43,7 +44,7 @@ const grabQueen1 = ["Now you've made me mad.", "You think this will stop me?.", 
 "My queen's capture was just a temporary setback.",
 "You think capturing my queen is a win, but it's just the beginning of your loss.",
 "You may have captured my queen, but the game is far from over."
-];;
+];
 const checkMateMessage = ["Good game, human.", "Another one bites the dust.", "You failed.", "That was very easy.", "I'll add this win to the pile", "Checkmate? More like check-your-ego mate.",
 "Looks like your king's in check, and there's no way out.",
 "I'm about to unleash a checkmate on your sorry behind.",

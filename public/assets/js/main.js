@@ -460,6 +460,16 @@ function checkGameState (board1) {
     if (state == "Fifty") {
         board1.moves = [];
     }
+    if (state == "Play") {
+        latestyou = board1.moveHistory[board1.moveHistory.length];
+        latestopp = board1.moveHistory[board1.moveHistory.length-1];
+        for (let i = 2; i < 6; i += 2) {
+            if (latestyou != board1.moveHistory[board1.moveHistory.length-i]) {
+                
+            }
+        }
+        state = "Rep";
+    }
     return state;
 }
 function logArray (s) {

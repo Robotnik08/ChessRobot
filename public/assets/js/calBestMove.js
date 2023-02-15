@@ -30,12 +30,12 @@ class Piece {
             ], [
                 //Black Queen
                 0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5, //line 1
-                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
-                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
-                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
-                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
-                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
-                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
+                3  , 3.3, 3.3, 3.3, 3.3, 3.3, 3.3, 3  , //line 2
+                3  , 3.3, 4  , 4  , 4  , 4  , 3.3, 3  , //line 3
+                5  , 3.3, 4  , 4  , 4  , 4  , 3.3, 5  , //line 4
+                3.3, 3.3, 4  , 4  , 4  , 4  , 2.5, 5  , //line 5
+                3  , 4  , 4  , 4  , 4  , 4  , 2.5, 3  , //line 6
+                3  , 2.5, 4  , 4  , 4  , 2.5, 2.5, 3  , //line 7
                 0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5  //line 8
             ], [
                 //Black Rook
@@ -91,12 +91,12 @@ class Piece {
             ], [
                 //White Queen
                 0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5, //line 8
-                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
-                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
-                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
-                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
-                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
-                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
+                3  , 2.5, 4  , 4  , 4  , 2.5, 2.5, 3  , //line 7
+                3  , 4  , 4  , 4  , 4  , 4  , 2.5, 3  , //line 6
+                3.3, 3.3, 4  , 4  , 4  , 4  , 2.5, 5  , //line 5
+                5  , 3.3, 4  , 4  , 4  , 4  , 3.3, 5  , //line 4
+                3  , 3.3, 4  , 4  , 4  , 4  , 3.3, 3  , //line 3
+                3  , 3.3, 3.3, 3.3, 3.3, 3.3, 3.3, 3  , //line 2
                 0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5  //line 1
             ], [
                 //White Rook
@@ -175,7 +175,6 @@ const endgameStrength = 0.5;
 const depth = 6;
 const immediateMateScore = 1000000;
 onmessage = (e) => {
-    e.data.moveHistory = [];
     Evaluate(e.data, depth);
 };
 function Evaluate (board1, depth) {
@@ -296,6 +295,7 @@ function checkGameState (board1) {
 // }
 
 function setMove (board1, move) {
+    board1.moveHistory.push(move);
     board1.gameLength++;
     board1.targets.push(board1.square[move.target]);
     let capture = board1.square[move.target] > 0;
@@ -405,6 +405,7 @@ function setMove (board1, move) {
 function undoMove (board1, move) {
     board1.square[move.start] = board1.square[move.target];
     board1.square[move.target] = board1.targets.pop();
+    board1.moveHistory.pop();
     board1.whiteToMove = !board1.whiteToMove;
     if (!(board1.gameLength ^ board1.castleQ)) {
         board1.castleQ = 0;
