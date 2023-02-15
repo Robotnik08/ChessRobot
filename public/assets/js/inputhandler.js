@@ -1,5 +1,6 @@
 //inputhandler
 let sel = false;
+let thinkingTime = 3;
 const d = document.getElementById('quotes');
 const startingMessage = ["I will defeat you.", "Let's get this over with.", "You think you can beat me?"];
 d.innerHTML = startingMessage[(Math.random()*startingMessage.length)|0];
@@ -112,13 +113,21 @@ function clickup () {
     }
 }
 function botMove(board1) {
+    const simpleEndGame = checkifSimple(board1.square);
     const w = new Worker('assets/js/calBestMove.js');
-    w.postMessage(board1);
-    w.onmessage = (e) => {
-        moveWithSound(parseObjToClass(e.data), board1);
-        w.terminate();
-        return true;
-    };
+    w.postMessage({b: board1, t: thinkingTime, s: simpleEndGame});
+    if (simpleEndGame) {
+        let result;
+        setTimeout(()=>{moveWithSound(result, board1); w.terminate();}, thinkingTime*1000);
+        w.onmessage = (e) => {
+            result = parseObjToClass(e.data);
+        };
+    } else {
+        w.onmessage = (e) => {
+            moveWithSound(parseObjToClass(e.data), board1);
+            w.terminate();
+        };
+    }
 }
 function moveWithSound (move, board1) {
     if (move == false) {
@@ -137,7 +146,7 @@ function moveWithSound (move, board1) {
     lastMoveEnd = move.target;
     const state = checkGameState(board1);
     if (state != "Play") {
-        io.emit('sendState', {board: generateFEN(board1), timeStamp: Date.now(), result: state});
+        io.emit('sendState', {board: generateFEN(board1), timeStamp: Date.now(), result: state, robot: !board.isHuman.white});
         if (state == "CheckMate") {
             document.getElementById("gameState").innerHTML = `CheckMate! ${(board1.whiteToMove ? "Black" : "White")} wins!!`;
             if (board1.isHuman.white && board1.whiteToMove || board1.isHuman.black && !board1.whiteToMove) {
@@ -145,14 +154,20 @@ function moveWithSound (move, board1) {
             } else {
                 d.innerHTML = lostMessage[(Math.random()*grabPiece1.length)|0];
             }
-            return;
         }
         else if (state == "Stalemate") {
             document.getElementById("gameState").innerHTML = 'Draw by stalemate!';
+            board1.moves = [];
+        }
+        else if (state == "Rep") {
+            document.getElementById("gameState").innerHTML = 'Draw by repetition!';
+            board1.moves = [];
         }
         else if (state == "Fifty") {
             document.getElementById("gameState").innerHTML = 'Draw by fifty move rule!';
+            board1.moves = [];
         }
+        return;
     }
     if ((!board1.isHuman.white && board1.whiteToMove) || (!board1.isHuman.black && !board1.whiteToMove)) {
         botMove(board1);
@@ -176,7 +191,7 @@ function moveWithSound (move, board1) {
     return true;
 }
 function parseObjToClass (m) {
-    return m.promote != null ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
+    return m.special ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
 }
 function refreshCapturedPieceHTML(board1) {
     const w = document.getElementById('white-p');

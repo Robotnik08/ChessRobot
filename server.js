@@ -27,6 +27,10 @@ if (!fs.existsSync(dir + "/chessStats.json")) {
     JSONwinData = JSON.parse(fs.readFileSync(dir + "/chessStats.json", 'utf-8'));
 }
 io.on('connection', (socket) => {
+    socket.emit("getStateTest");
+    socket.on("getStateTest", () => {
+        socket.emit("getState", JSONwinData);
+    });
     socket.on("sendState", (data) => {
         JSONwinData.games.push(data);
         let file = fs.createWriteStream(dir + "/chessStats.json");

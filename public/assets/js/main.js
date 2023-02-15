@@ -1,8 +1,3 @@
-const can = document.getElementById('main');
-const ctx = can.getContext('2d');
-can.offscreenCanvas = document.createElement('canvas');
-can.offscreenCanvas.width = can.width;
-can.offscreenCanvas.height = can.height;
 const numToEdge = preComputedSlidingData();
 const preKnight = preComputedKnightData();
 const preKing = preComputedKingData();
@@ -10,8 +5,9 @@ const piece = new Piece();
 const player = Math.round(Math.random());
 const board = new Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', player, !player);
 const mouse = {x:0,y:0};
-// rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-// 5k2/p6p/6r1/7K/1p6/1B6/P7/8 w - - 0 1
+// rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1  ## Starting POSITION ##
+// 5k2/p6p/6r1/7K/1p6/1B6/P7/8 w - - 0 1  ## En passant check ##
+// 8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -  ## Far searching endgame ##
 
 
 
@@ -56,10 +52,7 @@ function checkLegal (board1) {
     filterLegal(board1);
 }
 function filterLegal (board1) {
-    let col = piece.black;
-    if (board1.whiteToMove) {
-        col = piece.white;
-    }
+    const col = board1.whiteToMove ? piece.white : piece.black;
     for (let i = 0; i < 64; i++) {
         if (!(board1.square[i] ^ (col | piece.king))) {
             kingGenSlidingPin(board1, i);
@@ -78,17 +71,11 @@ function orderMoves (board1) {
     return prio;
 }
 function kingGenSlidingPin (board1, i) {
-    let col = piece.white;
-    if (board1.whiteToMove) {
-        col = piece.black;
-    }
+    const col = board1.whiteToMove ? piece.black : piece.white;
     for (let dirI = 0; dirI < 8; dirI++) {
         let hasFriend = false;
         let friendIndex = 0;
-        let p = piece.rook;
-        if (dirI > 3) {
-            p = piece.bishop;
-        }
+        let p = dirI > 3 ? piece.bishop : piece.rook;
         for (let n = 0; n < numToEdge[i][dirI]; n++) {
             let target = i + piece.directions[dirI] * (n + 1);
             let targetpiece = board1.square[target];
@@ -118,9 +105,9 @@ function kingGenSlidingPin (board1, i) {
 function genSliding (board1, i, type) {
     let start = 0;
     let end = 8;
-    if (type == (piece.white | piece.rook) || type == (piece.black | piece.rook)) {
+    if (!(type ^ (piece.white | piece.rook)) || !(type ^ (piece.black | piece.rook))) {
         end = 4;
-    } else if (type == (piece.white | piece.bishop) || type == (piece.black | piece.bishop)) {
+    } else if (!(type ^ (piece.white | piece.bishop)) || !(type ^ (piece.black | piece.bishop))) {
         start = 4;
     }
     for (let dirI = start; dirI < end; dirI++) {
@@ -460,6 +447,25 @@ function checkGameState (board1) {
     if (state == "Fifty") {
         board1.moves = [];
     }
+    if (state == "Play") {
+        if (!(board1.moveHistory.length-1)) {
+            return state;
+        }
+        latestyou = board1.moveHistory[board1.moveHistory.length-1];
+        latestopp = board1.moveHistory[board1.moveHistory.length-2];
+        for (let i = 1; i < 3; i++) {
+            if (board1.moveHistory.length-2-i*4 < 0) {
+                return state;
+            }
+            if (!(!(latestyou.start ^ board1.moveHistory[board1.moveHistory.length-1-i*4].start) && !(latestyou.target ^ board1.moveHistory[board1.moveHistory.length-1-i*4].target))) {
+                return state;
+            }
+            if (!(!(latestopp.start	^ board1.moveHistory[board1.moveHistory.length-2-i*4].start) && !(latestopp.target ^ board1.moveHistory[board1.moveHistory.length-2-i*4].target))) {
+                return state;
+            }
+        }
+        return "Rep";
+    }
     return state;
 }
 function logArray (s) {
@@ -468,4 +474,21 @@ function logArray (s) {
         str += `${s[i]}, `;
     }
     console.log(`${str.slice(0,-2)}]`);
+}
+function checkifSimple (board1) {
+    for (let i in board1) {
+        switch (board1[i]) {
+            case 0:
+            case piece.white | piece.king:
+            case piece.white | piece.knight:
+            case piece.white | piece.pawn:
+            case piece.black | piece.king:
+            case piece.black | piece.knight:
+            case piece.black | piece.pawn:
+                break;
+            default:
+                return false;
+        }
+    }
+    return true;
 }

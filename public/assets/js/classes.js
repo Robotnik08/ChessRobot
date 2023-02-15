@@ -30,13 +30,13 @@ class Piece {
                 7  , 11 , 4  , 3.5, 3.5, 4  , 11 , 7    //line 8
             ], [
                 //Black Queen
-                0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5, //line 1
-                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
-                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
-                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
-                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
-                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
-                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
+                0.5, 3  , 3  , 7  , 7  , 3  , 3  , 0.5, //line 1
+                3  , 3.3, 3.3, 3.3, 3.3, 3.3, 3.3, 3  , //line 2
+                3  , 3.3, 4  , 4  , 4  , 4  , 3.3, 3  , //line 3
+                5  , 3.3, 4  , 4  , 4  , 4  , 3.3, 5  , //line 4
+                3.3, 3.3, 4  , 4  , 4  , 4  , 2.5, 5  , //line 5
+                3  , 4  , 4  , 4  , 4  , 4  , 2.5, 3  , //line 6
+                3  , 2.5, 4  , 4  , 4  , 2.5, 2.5, 3  , //line 7
                 0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5  //line 8
             ], [
                 //Black Rook
@@ -65,13 +65,13 @@ class Piece {
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
                 3  , 6  , 7  , 12 , 12 , 7  , 6  , 3  , //line 4
                 3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
-                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
+                3  , 6  , 7  , 7  , 7  , 6  , 7  , 3  , //line 6
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
-                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5  //line 8
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5  //line 8
             ], [
                 //Black Pawn
                 1  , 1  , 1  , 1  , 1  , 1  , 1  , 1  , //line 1
-                10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
+                30 , 30 , 30 , 30 , 30 , 30 , 30 , 30 , //line 2
                 3  , 3  , 5  , 6  , 6  , 5  , 3  , 3  , //line 3
                 3  , 3  , 6  , 9  , 9  , 6  , 3  , 3  , //line 4
                 2.5, 2.5, 2.5, 15 , 15 , 2.5, 2.5, 2.5, //line 5
@@ -92,13 +92,13 @@ class Piece {
             ], [
                 //White Queen
                 0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5, //line 8
-                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
-                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
-                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
-                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
-                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
-                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
-                0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5  //line 1
+                3  , 2.5, 4  , 4  , 4  , 2.5, 2.5, 3  , //line 7
+                3  , 4  , 4  , 4  , 4  , 4  , 2.5, 3  , //line 6
+                3.3, 3.3, 4  , 4  , 4  , 4  , 2.5, 5  , //line 5
+                5  , 3.3, 4  , 4  , 4  , 4  , 3.3, 5  , //line 4
+                3  , 3.3, 4  , 4  , 4  , 4  , 3.3, 3  , //line 3
+                3  , 3.3, 3.3, 3.3, 3.3, 3.3, 3.3, 3  , //line 2
+                0.5, 3  , 3  , 7  , 7  , 3  , 3  , 0.5  //line 1
             ], [
                 //White Rook
                 3  , 3.5, 4  , 6.5, 6.5, 4  , 3.5, 3  , //line 8
@@ -121,7 +121,7 @@ class Piece {
                 0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5  //line 1
             ], [
                 //White Knight
-                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5, //line 8
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5, //line 8
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
                 3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
@@ -134,10 +134,10 @@ class Piece {
                 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , //line 8
                 3  , 4  , 4  , 0  , 0  , 4  , 4  , 3  , //line 7
                 3  , 1.5, 1  , 3  , 3  , 1  , 1.5, 3  , //line 6
-                2.5, 2.5, 2.5, 14 , 14 , 2.5, 2.5, 2.5, //line 5
+                2.5, 2.5, 2.5, 15 , 15 , 2.5, 2.5, 2.5, //line 5
                 3  , 3  , 3.5, 6  , 6  , 3.5, 3  , 3  , //line 4
                 3  , 3  , 4  , 6  , 6  , 4  , 3  , 3  , //line 3
-                10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
+                30 , 30 , 30 , 30 , 30 , 30 , 30 , 30 , //line 2
                 1  , 1  , 1  , 1  , 1  , 1  , 1  , 1    //line 1
             ]
         ]
@@ -150,7 +150,6 @@ class Board {
         this.whiteToMove = true;
         this.isHuman = {white: w, black:b};
         //hash
-        //this.hashHistory = [];
         this.moveHistory = [];
         this.gameLength = 0;
         this.targets = [];
@@ -204,7 +203,7 @@ function setMove (board1, move) {
         if (!board1.castleq) board1.castleq = board1.gameLength;
     }
     
-    if (move.constructor.name == 'MoveSpecial') {
+    if (move.special) {
         if (move.castle != 0) {
             if (move.castle > 0) {
                 board1.square[move.target - 1] = board1.square[move.target + 1];
@@ -266,7 +265,7 @@ function setMove (board1, move) {
             
         }
     }
-    if (move.constructor.name == 'PawnLeap') {
+    if (move.leap) {
         if (board1.whiteToMove) {
             board1.enPas = move.target - 8;
         } else {
@@ -294,7 +293,7 @@ class Move {
         this.target = t;
     }
 }
-class MoveSpecial {
+class MoveSpecial{
     constructor (s, t, c, e, p) {
         this.start = s;
         this.target = t;
@@ -302,6 +301,7 @@ class MoveSpecial {
         this.castle = c;
         this.enPas = e;
         this.promote = p;
+        this.special = true;
     }
 }
 
@@ -312,34 +312,7 @@ class PawnLeap {
         this.leap = true;
     }
 }
-// const table = initZobrist();
-// function initZobrist () {
-//     const table = {board:[[]], blackToMove:""};
-//     for (let i = 0; i < 64; i++) {
-//         for (let j = 0; j < 12; j++) {
-//             table[i][j] = random_bitstring();
-//         }
-//     }
-//     table.blackToMove = random_bitstring();
-//     table.blackToMove = random_bitstring();
-//     return table;
-// }
-// function hashZobrist (board1) {
-//     let hash = 0;
-//     for (let i = 0; i < 64; i++) {
-//         if (board1[i] > 0) {
-//             hash ^= parseInt(table[i][board1[i]]);
-//         }
-//     }
-//     return hash;
-// }
-// function random_bitstring () {
-//     let b = "0b";
-//     for (let k = 0; k < 30; k++) {
-//         b += Math.Round(Math.random());
-//     }
-//     return b;
-// }
+
 function setupBoard (FEN, board1) {
     let pieceID = new Piece();
     for (let i = 0; i < 64; i++) {
@@ -379,7 +352,6 @@ function setupBoard (FEN, board1) {
                     break;
             }
             IPos++;
-            
         }
     }
     board1.whiteToMove = FEN.split(" ")[1] == 'w';

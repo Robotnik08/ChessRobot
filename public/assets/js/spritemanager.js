@@ -23,7 +23,11 @@ wq.src = './assets/img/wq.png';
 const wr = new Image();
 wr.src = './assets/img/wr.png';
 const sprites = [null, null, null, null, null, null, null, null, null, bk, bq, br, bb, bn, bp, null, null, wk, wq, wr, wb, wn, wp];
-
+const can = document.getElementById('main');
+const ctx = can.getContext('2d');
+can.offscreenCanvas = document.createElement('canvas');
+can.offscreenCanvas.width = can.width;
+can.offscreenCanvas.height = can.height;
 const movesound = new Audio();
 movesound.src = './assets/audio/move.wav';
 const capturesound = new Audio();

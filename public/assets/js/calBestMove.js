@@ -29,13 +29,13 @@ class Piece {
                 7  , 11 , 4  , 3.5, 3.5, 4  , 11 , 7    //line 8
             ], [
                 //Black Queen
-                0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5, //line 1
-                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
-                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
-                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
-                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
-                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
-                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
+                0.5, 3  , 3  , 7  , 7  , 3  , 3  , 0.5, //line 1
+                3  , 3.3, 3.3, 3.3, 3.3, 3.3, 3.3, 3  , //line 2
+                3  , 3.3, 4  , 4  , 4  , 4  , 3.3, 3  , //line 3
+                5  , 3.3, 4  , 4  , 4  , 4  , 3.3, 5  , //line 4
+                3.3, 3.3, 4  , 4  , 4  , 4  , 2.5, 5  , //line 5
+                3  , 4  , 4  , 4  , 4  , 4  , 2.5, 3  , //line 6
+                3  , 2.5, 4  , 4  , 4  , 2.5, 2.5, 3  , //line 7
                 0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5  //line 8
             ], [
                 //Black Rook
@@ -64,13 +64,13 @@ class Piece {
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 3
                 3  , 6  , 7  , 12 , 12 , 7  , 6  , 3  , //line 4
                 3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
-                3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
+                3  , 6  , 7  , 7  , 7  , 6  , 7  , 3  , //line 6
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
-                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5  //line 8
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5  //line 8
             ], [
                 //Black Pawn
                 1  , 1  , 1  , 1  , 1  , 1  , 1  , 1  , //line 1
-                10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
+                30 , 30 , 30 , 30 , 30 , 30 , 30 , 30 , //line 2
                 3  , 3  , 5  , 6  , 6  , 5  , 3  , 3  , //line 3
                 3  , 3  , 6  , 9  , 9  , 6  , 3  , 3  , //line 4
                 2.5, 2.5, 2.5, 15 , 15 , 2.5, 2.5, 2.5, //line 5
@@ -91,13 +91,13 @@ class Piece {
             ], [
                 //White Queen
                 0.5, 3  , 3  , 3.5, 3.5, 3  , 3  , 0.5, //line 8
-                3  , 5.5, 7  , 7  , 7  , 5.5, 5.5, 3  , //line 7
-                3  , 7  , 7  , 7  , 7  , 7  , 5.5, 3  , //line 6
-                6  , 6  , 7  , 7  , 7  , 7  , 5.5, 5  , //line 5
-                5  , 6  , 7  , 7  , 7  , 7  , 6  , 5  , //line 4
-                3  , 6  , 7  , 7  , 7  , 7  , 6  , 3  , //line 3
-                3  , 6  , 6  , 6  , 6  , 6  , 6  , 3  , //line 2
-                0.5, 3  , 3  , 5  , 5  , 3  , 3  , 0.5  //line 1
+                3  , 2.5, 4  , 4  , 4  , 2.5, 2.5, 3  , //line 7
+                3  , 4  , 4  , 4  , 4  , 4  , 2.5, 3  , //line 6
+                3.3, 3.3, 4  , 4  , 4  , 4  , 2.5, 5  , //line 5
+                5  , 3.3, 4  , 4  , 4  , 4  , 3.3, 5  , //line 4
+                3  , 3.3, 4  , 4  , 4  , 4  , 3.3, 3  , //line 3
+                3  , 3.3, 3.3, 3.3, 3.3, 3.3, 3.3, 3  , //line 2
+                0.5, 3  , 3  , 7  , 7  , 3  , 3  , 0.5  //line 1
             ], [
                 //White Rook
                 3  , 3.5, 4  , 6.5, 6.5, 4  , 3.5, 3  , //line 8
@@ -120,7 +120,7 @@ class Piece {
                 0.5, 2  , 2  , 2  , 2  , 2  , 2  , 0.5  //line 1
             ], [
                 //White Knight
-                0.5, 1  , 2  , 2  , 2  , 2  , 1  , 0.5, //line 8
+                0.5, 0  , 2  , 2  , 2  , 2  , 0  , 0.5, //line 8
                 1  , 4  , 6  , 6  , 6  , 6  , 4  , 1  , //line 7
                 3  , 6  , 6  , 7  , 7  , 6  , 6  , 3  , //line 6
                 3  , 6  , 7  , 8.5, 8.5, 7  , 6  , 3  , //line 5
@@ -133,10 +133,10 @@ class Piece {
                 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , //line 8
                 3  , 4  , 4  , 0  , 0  , 4  , 4  , 3  , //line 7
                 3  , 1.5, 1  , 3  , 3  , 1  , 1.5, 3  , //line 6
-                2.5, 2.5, 2.5, 14 , 14 , 2.5, 2.5, 2.5, //line 5
+                2.5, 2.5, 2.5, 15 , 15 , 2.5, 2.5, 2.5, //line 5
                 3  , 3  , 3.5, 6  , 6  , 3.5, 3  , 3  , //line 4
                 3  , 3  , 4  , 6  , 6  , 4  , 3  , 3  , //line 3
-                10 , 10 , 10 , 10 , 10 , 10 , 10 , 10 , //line 2
+                30 , 30 , 30 , 30 , 30 , 30 , 30 , 30 , //line 2
                 1  , 1  , 1  , 1  , 1  , 1  , 1  , 1    //line 1
             ]
         ]
@@ -156,14 +156,21 @@ class MoveSpecial {
         this.castle = c;
         this.enPas = e;
         this.promote = p;
+        this.special = true;
     }
 }
-
 class PawnLeap {    
     constructor (s, t) {
         this.start = s;
         this.target = t;
         this.leap = true;
+    }
+}
+class Entry {
+    constructor (h, d, s) {
+        this.hash = h;
+        this.depth = d;
+        this.score = s;
     }
 }
 
@@ -172,17 +179,26 @@ const preKnight = preComputedKnightData();
 const preKing = preComputedKingData();
 const piece = new Piece();
 const endgameStrength = 0.5;
-const depth = 6;
 const immediateMateScore = 1000000;
+const transpositiontable = [];
+const z_key = initZobrist();
+const z_list = [];
+let simpleEndGame = false;
 onmessage = (e) => {
-    e.data.moveHistory = [];
-    Evaluate(e.data, depth);
+    simpleEndGame = e.data.s;
+    Evaluate(e.data.b);
 };
-function Evaluate (board1, depth) {
+function Evaluate (board1) {
     board1.isHuman = {white: false, black: false};
     for (let i = board1.moves.length - 1; i >= 0; i--) {
         board1.moves[i] = parseObjToClass(board1.moves[i]);
     }
+    let depth = 2;
+    while (simpleEndGame) {
+        postMessage(AlphaBeta(board1, 0, depth, -Infinity, +Infinity, board1.whiteToMove, true, board1.whiteToMove));
+        depth++;
+    };
+    depth = 6;
     postMessage(AlphaBeta(board1, 0, depth, -Infinity, +Infinity, board1.whiteToMove, true, board1.whiteToMove));
 }
 function AlphaBeta (board1, fromRoot, depth, alpha, beta, m, r, o) {
@@ -190,13 +206,21 @@ function AlphaBeta (board1, fromRoot, depth, alpha, beta, m, r, o) {
     if (!(depth - 1)) {
         return evaluatePosition(board1);
     } else {
+        if (simpleEndGame) {
+            var hash = hashZobrist(board1);
+            var transScore = returnHashEntry(z_list, hash, depth);
+            if (!isNaN(transScore)) {
+                return transScore;
+            }
+        }
         let score = Infinity;
         if (r) var winDex = 0;
+        const moves = structuredClone(board1.moves);
         const order = orderMoves(board1);
         if (m) {
             score = -Infinity;
-            for (let i = board1.moves.length - 1; i >= 0; i--) {
-                const move2 = board1.moves[order.indexOf(Math.min(...order))];
+            for (let i = moves.length - 1; i >= 0; i--) {
+                const move2 = moves[order.indexOf(Math.min(...order))];
                 setMove(board1, move2);
                 if (r) var j = order.indexOf(Math.min(...order));
                 order[order.indexOf(Math.min(...order))] = Infinity;
@@ -208,11 +232,16 @@ function AlphaBeta (board1, fromRoot, depth, alpha, beta, m, r, o) {
                     break;
                 }
             }
-            if (r) return board1.moves[winDex];
+            if (r) return moves[winDex];
+            if (simpleEndGame) {
+                if (isNaN(transScore)) {
+                    z_list.push(new Entry(hash, depth, score));
+                }
+            }
             return score;
         }
-        for (let i = board1.moves.length - 1; i >= 0; i--) {
-            const move2 = board1.moves[order.indexOf(Math.max(...order))];
+        for (let i = moves.length - 1; i >= 0; i--) {
+            const move2 = moves[order.indexOf(Math.max(...order))];
             setMove(board1, move2);
             if (r) var j = order.indexOf(Math.max(...order));
             order[order.indexOf(Math.max(...order))] = -Infinity;
@@ -224,12 +253,17 @@ function AlphaBeta (board1, fromRoot, depth, alpha, beta, m, r, o) {
                 break;
             }
         }
-        if (r) return board1.moves[winDex];
+        if (r) return moves[winDex];
+        if (simpleEndGame) {
+            if (isNaN(transScore)) {
+                z_list.push(new Entry(hash, depth, score));
+            }
+        }
         return score;
     }
 }
 function getNoMovesResult(board1, plyFromRoot) {
-    if (checkGameState(board1) == "CheckMate") {
+    if (!(checkGameState(board1) ^ 1)) {
         return (immediateMateScore - plyFromRoot*100)*(board1.whiteToMove ? -1 : 1);
     }
     return 0;
@@ -237,13 +271,24 @@ function getNoMovesResult(board1, plyFromRoot) {
 function evaluatePosition (board1) {
     return evalMaterials(board1);
 }
-
+function returnHashEntry (list, hash, depth) {
+    for (let i in list) {
+        if (list[i].hash ^ hash) {
+            continue;
+        }
+        if (list[i].depth ^ depth) {
+            continue;
+        }
+        return list[i].score;
+    }
+    return 'n';
+}
 function evalMaterials (board1) {
     const state = checkGameState(board1);
-    if (state == "CheckMate") {
+    if (!(state ^ 1)) {
         return board1.whiteToMove ? -Infinity : Infinity;
     }
-    if (state == "StaleMate" || state == "Fifty") {
+    if (!(state ^ 2)) {
         return 0;
     }
     const endGameWeight = getWeight(board1.square);
@@ -279,27 +324,76 @@ function getWeightSplit (b) {
 }
 
 function checkGameState (board1) {
-    const state = !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? "CheckMate" : "Stalemate" : board1.fiftyMoveTimer > 50 ? "Fifty" : "Play";
-    if (state == "Fifty") {
+    const state = !board1.moves.length ? checkIfAttacked(board1, getKingDex(board1)) ? 1 : 2 : board1.fiftyMoveTimer > 50 ? 2 : 0;
+    if (!state) {
+        if (board1.moveHistory.length-1 < 0) {
+            return 0;
+        }
+        latestyou = board1.moveHistory[board1.moveHistory.length-1];
+        latestopp = board1.moveHistory[board1.moveHistory.length-2];
+        for (let i = 1; i < 3; i++) {
+            if (board1.moveHistory.length-2-i*4 < 0) {
+                return 0;
+            }
+            if (latestyou.start ^ board1.moveHistory[board1.moveHistory.length-1-i*4].start || latestyou.target ^ board1.moveHistory[board1.moveHistory.length-1-i*4].target) {
+                return 0;
+            }
+            if (latestopp.start	^ board1.moveHistory[board1.moveHistory.length-2-i*4].start || latestopp.target ^ board1.moveHistory[board1.moveHistory.length-2-i*4].target) {
+                return 0;
+            }
+        }
+        state = 2;
+    }
+    if (!(state ^ 2)) {
         board1.moves = [];
     }
     return state;
 }
-// function hashZobrist (board1) {
-//     let hash = 0;
-//     for (let i = 0; i < 64; i++) {
-//         if (board1[i] > 0) {
-//             hash ^= parseInt(table[i][board1[i]]);
-//         }
-//     }
-//     return hash;
-// }
+function hashZobrist (board1) {
+    let hash = 0;
+    for (let i = 0; i < 64; i++) {
+        hash ^= z_key[i][board1.square[i]];
+    }
+    if (!board1.whiteToMove) hash ^= z_key.blackToMove;
+    if (board1.enPas > 0) hash ^= z_key.enPas;
+    if (board1.castleK) hash ^= z_key.castleK;
+    if (board1.castleQ) hash ^= z_key.castleQ;
+    if (board1.castlek) hash ^= z_key.castlek;
+    if (board1.castleq) hash ^= z_key.castleq;
+    return hash;
+}
+function initZobrist () {
+    const table = {board:[], blackToMove:0, enPas:0, castleK:0, castleQ:0, castlek:0, castleq:0};
+    for (let i = 0; i < 64; i++) {
+        table[i] = [];
+        for (let j = 0; j < 23; j++) {
+            table[i][j] = random_bitstring();
+        }
+        table[i][0] = 0;
+    }
+    table.blackToMove = random_bitstring();
+    table.enPas = random_bitstring();
+    table.castleK = random_bitstring();
+    table.castleQ = random_bitstring();
+    table.castlek = random_bitstring();
+    table.castleq = random_bitstring();
+    return table;
+}
+function random_bitstring () {
+    let b = "";
+    for (let k = 0; k < 16; k++) {
+        b += `${Math.round(Math.random())}`;
+    }
+    return parseInt(b, 2);
+}
 
 function setMove (board1, move) {
+    board1.moveHistory.push(move);
     board1.gameLength++;
     board1.targets.push(board1.square[move.target]);
     let capture = board1.square[move.target] > 0;
     let starttype = board1.square[move.start];
+    board1.lastCapture = board1.square[move.target];
     board1.square[move.target] = board1.square[move.start];
     board1.square[move.start] = 0;
     if (!move.start || !move.target) {
@@ -318,7 +412,7 @@ function setMove (board1, move) {
         if (!board1.castleq) board1.castleq = board1.gameLength;
     }
     
-    if (move.constructor.name == 'MoveSpecial') {
+    if (move.special) {
         if (move.castle != 0) {
             if (move.castle > 0) {
                 board1.square[move.target - 1] = board1.square[move.target + 1];
@@ -336,51 +430,14 @@ function setMove (board1, move) {
             }
             capture = true;
         } else if (move.promote) {
-            if ((board1.isHuman.white && board1.whiteToMove) || (board1.isHuman.black && !board1.whiteToMove)) {
-                let type = prompt('Enter your Piece (Q,R,B,K) defaults to queen');
-                console.log(type);
-                if (type == '' || type == null) {
-                    if (board1.whiteToMove) {
-                        board1.square[move.target] = piece.white | piece.queen;
-                    } else {
-                        board1.square[move.target] = piece.black | piece.queen;
-                    }
-                } else if (type[0].toLowerCase() == 'r') {
-                    if (board1.whiteToMove) {
-                        board1.square[move.target] = piece.white | piece.rook;
-                    } else {
-                        board1.square[move.target] = piece.black | piece.rook;
-                    }
-                } else if (type[0].toLowerCase() == 'b') {
-                    if (board1.whiteToMove) {
-                        board1.square[move.target] = piece.white | piece.bishop;
-                    } else {
-                        board1.square[move.target] = piece.black | piece.bishop;
-                    }
-                } else if (type[0].toLowerCase() == 'k') {
-                    if (board1.whiteToMove) {
-                        board1.square[move.target] = piece.white | piece.knight;
-                    } else {
-                        board1.square[move.target] = piece.black | piece.knight;
-                    }
-                } else {
-                    if (board1.whiteToMove) {
-                        board1.square[move.target] = piece.white | piece.queen;
-                    } else {
-                        board1.square[move.target] = piece.black | piece.queen;
-                    }
-                }
+            if (board1.whiteToMove) {
+                board1.square[move.target] = piece.white | move.promote;
             } else {
-                if (board1.whiteToMove) {
-                    board1.square[move.target] = piece.white | move.promote;
-                } else {
-                    board1.square[move.target] = piece.black | move.promote;
-                }
+                board1.square[move.target] = piece.black | move.promote;
             }
-            
         }
     }
-    if (move.constructor.name == 'PawnLeap') {
+    if (move.leap) {
         if (board1.whiteToMove) {
             board1.enPas = move.target - 8;
         } else {
@@ -391,7 +448,7 @@ function setMove (board1, move) {
     }
     board1.enPasLog.push(board1.enPas);
     board1.selectedTile = null;
-    if (capture || starttype == (piece.white | piece.pawn) || starttype == (piece.black | piece.pawn)) {
+    if (capture || !(starttype ^ (piece.white | piece.pawn)) || !(starttype ^ (piece.black | piece.pawn))) {
         board1.fiftyMoveTimer = 0;
     } else {
         board1.fiftyMoveTimer++;
@@ -403,6 +460,7 @@ function setMove (board1, move) {
     return capture;
 }
 function undoMove (board1, move) {
+    board1.moveHistory.pop();
     board1.square[move.start] = board1.square[move.target];
     board1.square[move.target] = board1.targets.pop();
     board1.whiteToMove = !board1.whiteToMove;
@@ -418,7 +476,7 @@ function undoMove (board1, move) {
     if (!(board1.gameLength ^ board1.castlek)) {
         board1.castlek = 0;
     }
-    if (move.constructor.name == 'MoveSpecial') {
+    if (move.special) {
         if (move.castle != 0) {
             if (move.castle > 0) {
                 board1.square[move.target + 1] = board1.square[move.target - 1];
@@ -509,10 +567,7 @@ function orderMoves (board1) {
     return prio;
 }
 function kingGenSlidingPin (board1, i) {
-    let col = piece.white;
-    if (board1.whiteToMove) {
-        col = piece.black;
-    }
+    let col = board1.whiteToMove ? piece.black : piece.white;
     for (let dirI = 0; dirI < 8; dirI++) {
         let hasFriend = false;
         let friendIndex = 0;
@@ -549,9 +604,9 @@ function kingGenSlidingPin (board1, i) {
 function genSliding (board1, i, type) {
     let start = 0;
     let end = 8;
-    if (type == (piece.white | piece.rook) || type == (piece.black | piece.rook)) {
+    if (!(type ^ (piece.white | piece.rook)) || !(type ^ (piece.black | piece.rook))) {
         end = 4;
-    } else if (type == (piece.white | piece.bishop) || type == (piece.black | piece.bishop)) {
+    } else if (!(type ^ (piece.white | piece.bishop)) || !(type ^ (piece.black | piece.bishop))) {
         start = 4;
     }
     for (let dirI = start; dirI < end; dirI++) {
@@ -590,7 +645,7 @@ function genPawn (board1, i, type) {
     } else if (!preKing[i][2]) {
         toSide += 1;
     }
-    if (board1.square[i + offset] == piece.none) {
+    if (!board1.square[i + offset]) {
         if (i + offset * 2 > 63 || i + offset * 2 < 0) {
             board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.bishop));
             board1.moves.push(new MoveSpecial(i, i + offset, 0, false, piece.knight));
@@ -600,7 +655,7 @@ function genPawn (board1, i, type) {
             board1.moves.push(new Move(i, i + offset));
         }
     }
-    if (allowDouble && board1.square[i + offset * 2] == piece.none && board1.square[i + offset] == piece.none) {
+    if (allowDouble && !board1.square[i + offset * 2] && !board1.square[i + offset]) {
         board1.moves.push(new PawnLeap(i, i + offset * 2));
     }
     if (pieceIsColour(board1.square[i + offset + 1], !board1.whiteToMove) && toSide < 1) {
@@ -624,9 +679,9 @@ function genPawn (board1, i, type) {
         }
     }
     //enpassantCheck
-    if (board1.enPas == i + offset + 1) {
+    if (!((board1.enPas) ^ (i + offset + 1))) {
         board1.moves.push(new MoveSpecial(i, i + offset + 1, 0, true, 0));
-    } else if (board1.enPas == i + offset - 1) {
+    } else if (!(board1.enPas ^ (i + offset - 1))) {
         board1.moves.push(new MoveSpecial(i, i + offset - 1, 0, true, 0));
     }
 }
@@ -664,7 +719,6 @@ function checkIfAttacked (board1, i) {
                 }
                 if (!(targetpiece ^ (colme | piece.king))) {
                     continue;
-
                 }
                 break;
             }
@@ -799,7 +853,7 @@ function countAttacks(board1, i) {
 }
 function checkValid (s, t, board1) {
     for (let i = 0; i < board1.moves.length; i++) {
-        if (board1.moves[i].start == s && board1.moves[i].target == t) {
+        if (!(board1.moves[i].start ^ s) && !(board1.moves[i].target ^ t)) {
             return board1.moves[i];
         }
     }
@@ -818,10 +872,10 @@ function pieceIsColour (i, white) {
     return true;
 }
 function isSliding (i) {
-    return (i == (piece.white | piece.bishop) || i == (piece.white | piece.rook) || i == (piece.white | piece.queen) || i == (piece.black | piece.bishop) || i == (piece.black | piece.rook) || i == (piece.black | piece.queen));
+    return (!(i ^ (piece.white | piece.bishop)) || !(i ^ (piece.white | piece.rook)) || !(i ^ (piece.white | piece.queen)) || !(i ^ (piece.black | piece.bishop)) || !(i ^ (piece.black | piece.rook)) || !(i ^ (piece.black | piece.queen)));
 }
 function preComputedSlidingData () {
-    let data = [];
+    const data = [];
     for (let file = 0; file < 8; file++) {
         for (let rank = 0; rank < 8; rank++) {
 
@@ -883,9 +937,9 @@ function getKingDex (board1, isOther = false) {
             return i;
         }
     }
-    console.log('not founds?')
+    console.log('not founds?');
     return 0;
 }
 function parseObjToClass (m) {
-    return m.promote != null ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
+    return m.special ? new MoveSpecial (m.start, m.target, m.castle, m.enPas, m.promote) : m.leap ? new PawnLeap (m.start, m.target) : new Move (m.start, m.target);
 }
