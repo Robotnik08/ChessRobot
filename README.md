@@ -1,5 +1,14 @@
 # ChessRobot
 
+This is one of my most advanced JavaScript projects, I'm still really happy how it turned out. <br>
+
+If you want to try and beat it, check it out at https://sebastiaanheins.nl/chess <br>
+
+The old readme was pretty bad, and the code quality is not the best. But still, the theory and algorithms within this are pretty nice.
+
+
+## Old README (pre-19/10/2024)
+
 This is the official Slome Chess Robot!
 I made this robot with pure Javascript and it runs locally!
 
